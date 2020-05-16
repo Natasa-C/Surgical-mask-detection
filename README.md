@@ -31,3 +31,9 @@ The audio files are provided in .wav format.
 A spectrogram is a visual way of representing the signal strength, or “loudness”, of a signal over time at various frequencies present in a particular waveform.
 
 Every audio signal consists of many features from which we must extract the characteristics that are relevant to the problem we are trying to solve. The spectral features (frequency-based features), which are obtained by converting the time-based signal into the frequency domain using the Fourier Transform, we are going to extract are spectral centroid, spectral rolloff, spectral bandwidth, zero-crossing rate and Mel-Frequency Cepstral Coefficients(MFCCs).
+
+
+## Resources:
+### Most of the definitions have been extracted from the resources listed below:
+- https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
+
