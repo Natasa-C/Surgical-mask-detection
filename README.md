@@ -32,7 +32,7 @@ A spectrogram is a visual way of representing the signal strength, or “loudnes
 
 Every audio signal consists of many features from which we must extract the characteristics that are relevant to the problem we are trying to solve. The spectral features (frequency-based features), which are obtained by converting the time-based signal into the frequency domain using the Fourier Transform, we are going to extract are spectral centroid, spectral rolloff, spectral bandwidth, zero-crossing rate and Mel-Frequency Cepstral Coefficients(MFCCs).
 
-### spectral centroid
+### Spectral Centroid
 The spectral centroid is commonly associated with the measure of the brightness of a
 sound. This measure is obtained by evaluating the “center of gravity” using the Fourier
 transform’s frequency and magnitude information. 
@@ -49,11 +49,31 @@ sounds.
 Intuitive: It is center of mass of the spectrum. Since spectrum gives the indication of how the signal's mass (amplitude) is distributed among the frequencies, its center of mass indicates the average amount of amplitude. From speech perspective, it is the average loudness. From the image perspective, it is the average brightness. The mathematical equation used is, as you must be knowing or have guessed by now, weighted average. 'Weighted' because, the frequency components may be for instance non-uniformly separated (depending upon the transformation used) or due to application of filters sometimes it makes more sense to use the frequency information also into average instead of giving equal importance.
 
 
+### Spectral Rolloff
+It is a measure of the shape of the signal. It represents the frequency at which high frequencies decline to 0. To obtain it, we have to calculate the fraction of bins in the power spectrum where 85% of its power is at lower frequencies.
 
+### Spectral Bandwidth
+The spectral bandwidth is defined as the width of the band of light at one-half the peak maximum (or full width at half maximum [FWHM]) and is represented by the two vertical red lines and λSB on the wavelength axis.
+
+### Zero-Crossing Rate
+By looking at different speech and audio waveforms, we can see that depending on the content, they vary a lot in their smoothness. For example, voiced speech sounds are more smooth than unvoiced ones. Smoothness is thus a informative characteristic of the signal.
+
+A very simple way for measuring the smoothness of a signal is to calculate the number of zero-crossing within a segment of that signal. A voice signal oscillates slowly — for example, a 100 Hz signal will cross zero 100 per second — whereas an unvoiced fricative can have 3000 zero crossings per second.
+
+### Mel-Frequency Cepstral Coefficients(MFCCs)
+The Mel frequency cepstral coefficients (MFCCs) of a signal are a small set of features (usually about 10–20) which concisely describe the overall shape of a spectral envelope. It models the characteristics of the human voice.
+
+### Chroma feature
+A chroma feature or vector is typically a 12-element feature vector indicating how much energy of each pitch class, {C, C#, D, D#, E, …, B}, is present in the signal. In short, It provides a robust way to describe a similarity measure between music pieces.
 
 ## Resources:
 ### Most of the definitions have been extracted from the resources listed below:
 - https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
 - https://ccrma.stanford.edu/~unjung/AIR/areaExam.pdf
 - https://www.quora.com/In-an-intuitive-explanation-what-is-spectral-centroid
+- https://www.analiticaweb.com.br/newsletter/02/AN51721_UV.pdf
+- https://wiki.aalto.fi/display/ITSP/Zero-crossing+rate
+
+### Most of the functions and libraries used in code have been extracted from the resources listed below:
+- https://librosa.github.io/librosa/feature.html
 
