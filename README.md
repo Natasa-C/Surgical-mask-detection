@@ -27,6 +27,15 @@ Each line represents an example where:
 ### Audio Files
 The audio files are provided in .wav format.
 
+## [1] Initial preprocessing: cleaning the data
+
+We perceive sound in the frequency domain. The cochlea in our ear actually performs a biological Fourier transform by converting sound waves into neural signals of frequency amplitudes. It can be useful to also process digital audio signals in the frequency domain. For example tuning the lows, mids, and highs of an audio signal could be done by performing a Fourier transform on the time domain samples, scaling the various frequencies as desired, and then converting back to an audio signal with an inverse Fourier transform.
+
+Terms:
+
+**fft**: A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa.
+
+
 ## WAV file spectrogram and feature extraction
 A spectrogram is a visual way of representing the signal strength, or “loudness”, of a signal over time at various frequencies present in a particular waveform.
 
@@ -68,6 +77,11 @@ A chroma feature or vector is typically a 12-element feature vector indicating h
 
 ## Resources:
 ### Most of the definitions have been extracted from the resources listed below:
+**[1]**:
+- https://www.karlsims.com/fft.html
+- https://en.wikipedia.org/wiki/Fast_Fourier_transform
+
+**[2]**
 - https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
 - https://ccrma.stanford.edu/~unjung/AIR/areaExam.pdf
 - https://www.quora.com/In-an-intuitive-explanation-what-is-spectral-centroid
