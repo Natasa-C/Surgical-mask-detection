@@ -90,4 +90,8 @@ A chroma feature or vector is typically a 12-element feature vector indicating h
 
 ### Most of the functions and libraries used in code have been extracted from the resources listed below:
 - https://librosa.github.io/librosa/feature.html
-
+- https://github.com/codebasics/py/blob/master/ML/15_gridsearch/Exercise/15_grid_search_cv_exercise.ipynb
+- https://github.com/codebasics/py/blob/master/ML/15_gridsearch/15_grid_search.ipynb
+- https://www.youtube.com/watch?v=HdlDYng8g9s
+- https://www.youtube.com/watch?v=pooXM9mM7FU
+- https://www.kaggle.com/funxexcel/p2-logistic-regression-hyperparameter-tuning
