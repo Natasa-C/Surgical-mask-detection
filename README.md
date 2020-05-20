@@ -93,6 +93,9 @@ A chroma feature or vector is typically a 12-element feature vector indicating h
 - https://www.youtube.com/watch?v=m3XbqfIij_Y
 - https://www.youtube.com/watch?v=Oa_d-zaUti8
 
+**[PLOTING]**
+- https://github.com/reiinakano/scikit-plot/issues/87
+
 ### Most of the functions and libraries used in code have been extracted from the resources listed below:
 - https://librosa.github.io/librosa/feature.html
 - https://librosa.github.io/librosa/generated/librosa.feature.mfcc.html
