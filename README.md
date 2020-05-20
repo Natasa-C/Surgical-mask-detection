@@ -69,7 +69,7 @@ By looking at different speech and audio waveforms, we can see that depending on
 
 A very simple way for measuring the smoothness of a signal is to calculate the number of zero-crossing within a segment of that signal. A voice signal oscillates slowly — for example, a 100 Hz signal will cross zero 100 per second — whereas an unvoiced fricative can have 3000 zero crossings per second.
 
-### Mel-Frequency Cepstral Coefficients(MFCCs)
+### [M] Mel-Frequency Cepstral Coefficients(MFCCs)
 The Mel frequency cepstral coefficients (MFCCs) of a signal are a small set of features (usually about 10–20) which concisely describe the overall shape of a spectral envelope. It models the characteristics of the human voice.
 
 ### Chroma feature
@@ -88,6 +88,10 @@ A chroma feature or vector is typically a 12-element feature vector indicating h
 - https://www.analiticaweb.com.br/newsletter/02/AN51721_UV.pdf
 - https://wiki.aalto.fi/display/ITSP/Zero-crossing+rate
 - https://dev.to/zenulabidin/python-audio-processing-at-lightspeed-part-1-zignal-5658
+
+**[M]**
+- https://www.youtube.com/watch?v=m3XbqfIij_Y
+- https://www.youtube.com/watch?v=Oa_d-zaUti8
 
 ### Most of the functions and libraries used in code have been extracted from the resources listed below:
 - https://librosa.github.io/librosa/feature.html
