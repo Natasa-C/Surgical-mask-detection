@@ -105,3 +105,4 @@ A chroma feature or vector is typically a 12-element feature vector indicating h
 - https://www.youtube.com/watch?v=pooXM9mM7FU
 - https://www.kaggle.com/funxexcel/p2-logistic-regression-hyperparameter-tuning
 - [envelope/fft] https://www.youtube.com/watch?v=mUXkj1BKYk0&t=289s
+- [standardization/normalization] https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/?fbclid=IwAR31clqIFgUfDgvh4GoU4TY-Qgse1qOuDdQp6wVu8qzr2BnxBfkZFOX9hYU
