@@ -114,6 +114,13 @@ Resources:
 - [numpy.fft] https://numpy.org/doc/stable/reference/routines.fft.html
 - [explanations and examples] https://www.mathworks.com/help/signal/examples/practical-introduction-to-frequency-domain-analysis.html
 
+### [2.8] Spectral Contrast
+Spectral contrast considers the spectral peak, the spectral valley, and their difference in each frequency subband. For more information.
+
+Resources:
+- https://musicinformationretrieval.com/spectral_features.html
+
+
 ## [4] Hyperparameter Tuning
 
 I used ```sklearn.model_selection.GridSearchCV``` to try different parameters for ```sklearn.svm.SVC``` and ```sklearn.neural_network.MLPClassifier``` models.
