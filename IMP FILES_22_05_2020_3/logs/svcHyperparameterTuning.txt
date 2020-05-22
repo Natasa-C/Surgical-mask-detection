@@ -1,0 +1,5 @@
+New hyperparameter tuning
+  param_C param_kernel  mean_test_score
+0       1          rbf         0.548375
+Best params: {'C': 1, 'gamma': 'scale', 'kernel': 'rbf'}
+Best score: 0.548375
