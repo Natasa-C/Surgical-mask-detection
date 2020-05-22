@@ -52,12 +52,7 @@ The functions used to extract the features come, mainly, from ```librosa.feature
 
 Resources:
 - [librosa.feature] https://librosa.github.io/librosa/feature.html
-
-**fft**: A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa.
-
-Resources:
-- [fft] https://www.karlsims.com/fft.html
-- [fft] https://en.wikipedia.org/wiki/Fast_Fourier_transform
+-  [definitions and implementation examples] https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
 
 ### [2.1] Spectral Centroid
 The spectral centroid is commonly associated with the measure of the brightness of a
@@ -75,49 +70,68 @@ Resources:
 - [Spectral Centroid] https://ccrma.stanford.edu/~unjung/AIR/areaExam.pdf
 - [Spectral Centroid] https://www.quora.com/In-an-intuitive-explanation-what-is-spectral-centroid
 
-### Spectral Rolloff
-It is a measure of the shape of the signal. It represents the frequency at which high frequencies decline to 0. To obtain it, we have to calculate the fraction of bins in the power spectrum where 85% of its power is at lower frequencies.
+### [2.2] Spectral Rolloff
+It is a measure of the shape of the signal. It represents the frequency at which high frequencies decline to 0. To obtain it, we have to calculate the fraction of bins in the power spectrum where 85% (the default in ```librosa.feature.spectral_rolloff```) of its power is at lower frequencies. Intuitively, the roll-off frequency is defined as the frequency under which some percentage (cutoff) of the total energy of the spectrum is contained. The roll-off frequency can be used to distinguish between harmonic (below roll-off) and noisy sounds (above roll-off)
 
-### Spectral Bandwidth
+Resources:
+- [roll-off frequency] https://essentia.upf.edu/reference/streaming_RollOff.html
+
+### [2.3] Spectral Bandwidth
 The spectral bandwidth is defined as the width of the band of light at one-half the peak maximum (or full width at half maximum [FWHM]) and is represented by the two vertical red lines and λSB on the wavelength axis.
 
-### Zero-Crossing Rate
-By looking at different speech and audio waveforms, we can see that depending on the content, they vary a lot in their smoothness. For example, voiced speech sounds are more smooth than unvoiced ones. Smoothness is thus a informative characteristic of the signal.
+Resources:
+- https://www.analiticaweb.com.br/newsletter/02/AN51721_UV.pdf
+
+### [2.4] Zero-Crossing Rate
+By looking at different speech and audio waveforms, we can see that depending on the content, they vary a lot in their **smoothness**. For example, voiced speech sounds are more smooth than unvoiced ones. Smoothness is thus a informative characteristic of the signal.
 
 A very simple way for measuring the smoothness of a signal is to calculate the number of zero-crossing within a segment of that signal. A voice signal oscillates slowly — for example, a 100 Hz signal will cross zero 100 per second — whereas an unvoiced fricative can have 3000 zero crossings per second.
 
-### [M] Mel-Frequency Cepstral Coefficients(MFCCs)
+Resources:
+- [Zero-Crossing Rate] https://wiki.aalto.fi/display/ITSP/Zero-crossing+rate
+
+### [2.5] Mel-Frequency Cepstral Coefficients(MFCCs)
 The Mel frequency cepstral coefficients (MFCCs) of a signal are a small set of features (usually about 10–20) which concisely describe the overall shape of a spectral envelope. It models the characteristics of the human voice.
+
+Resources:
+- [explanation] https://www.youtube.com/watch?v=m3XbqfIij_Y
+- [implementation example] https://www.youtube.com/watch?v=Oa_d-zaUti8
+- [librosa.feature.mfcc] https://librosa.github.io/librosa/generated/librosa.feature.mfcc.html
+- [tutorial] http://practicalcryptography.com/miscellaneous/machine-learning/guide-mel-frequency-cepstral-coefficients-mfccs/
+- [explanation with graphics] https://medium.com/@LeonFedden/comparative-audio-analysis-with-wavenet-mfccs-umap-t-sne-and-pca-cb8237bfce2f
 
 ### Chroma feature
 A chroma feature or vector is typically a 12-element feature vector indicating how much energy of each pitch class, {C, C#, D, D#, E, …, B}, is present in the signal. In short, It provides a robust way to describe a similarity measure between music pieces.
 
+**fft**: A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa.
+
+Resources:
+- [fft] https://www.karlsims.com/fft.html
+- [fft] https://en.wikipedia.org/wiki/Fast_Fourier_transform
+
 ## Resources:
 ### Most of the definitions have been extracted from the resources listed below:
 
-**[2]**
-- https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
-
-- https://www.analiticaweb.com.br/newsletter/02/AN51721_UV.pdf
-- https://wiki.aalto.fi/display/ITSP/Zero-crossing+rate
-- https://dev.to/zenulabidin/python-audio-processing-at-lightspeed-part-1-zignal-5658
-
 **[M]**
-- https://www.youtube.com/watch?v=m3XbqfIij_Y
-- https://www.youtube.com/watch?v=Oa_d-zaUti8
+
 
 **[PLOTING]**
 - https://github.com/reiinakano/scikit-plot/issues/87
 
 ### Most of the functions and libraries used in code have been extracted from the resources listed below:
 - 
-- https://librosa.github.io/librosa/generated/librosa.feature.mfcc.html
+[https://musicinformationretrieval.com/spectral_features.html](https://musicinformationretrieval.com/spectral_features.html)
 - https://github.com/codebasics/py/blob/master/ML/15_gridsearch/Exercise/15_grid_search_cv_exercise.ipynb
 - https://github.com/codebasics/py/blob/master/ML/15_gridsearch/15_grid_search.ipynb
 - https://www.youtube.com/watch?v=HdlDYng8g9s
 - https://www.youtube.com/watch?v=pooXM9mM7FU
 - https://www.kaggle.com/funxexcel/p2-logistic-regression-hyperparameter-tuning
+
+Other related posts:
 - https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html?fbclid=IwAR1w6-IcQ3yvuH2frW3vEDl7CqeC4yY6KOnrrZKSMz2b_MHO6qadmj-PSKg
-- [envelope/fft] https://www.youtube.com/watch?v=mUXkj1BKYk0&t=289s
+- https://dev.to/zenulabidin/python-audio-processing-at-lightspeed-part-1-zignal-5658
+
+
+
 - [standardization/normalization] https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/?fbclid=IwAR31clqIFgUfDgvh4GoU4TY-Qgse1qOuDdQp6wVu8qzr2BnxBfkZFOX9hYU
 
