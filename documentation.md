@@ -45,16 +45,21 @@ Resources:
 - [series/rolling window] https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html
 
 
-Terms:
+## [2] .WAV file spectrogram and feature extraction
+A spectrogram is a visual way of representing the signal strength, or “loudness”, of a signal over time at various frequencies present in a particular waveform. Every audio signal consists of many features from which we must extract the characteristics that are relevant to the problem we are trying to solve. The spectral features (frequency-based features) are obtained by converting the time-based signal into the frequency domain using the Fourier Transform.
+
+The functions used to extract the features come, mainly, from ```librosa.feature``` library.
+
+Resources:
+- [librosa.feature] https://librosa.github.io/librosa/feature.html
+
 **fft**: A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa.
 
+Resources:
+- [fft] https://www.karlsims.com/fft.html
+- [fft] https://en.wikipedia.org/wiki/Fast_Fourier_transform
 
-## WAV file spectrogram and feature extraction
-A spectrogram is a visual way of representing the signal strength, or “loudness”, of a signal over time at various frequencies present in a particular waveform.
-
-Every audio signal consists of many features from which we must extract the characteristics that are relevant to the problem we are trying to solve. The spectral features (frequency-based features), which are obtained by converting the time-based signal into the frequency domain using the Fourier Transform, we are going to extract are spectral centroid, spectral rolloff, spectral bandwidth, zero-crossing rate and Mel-Frequency Cepstral Coefficients(MFCCs).
-
-### Spectral Centroid
+### [2.1] Spectral Centroid
 The spectral centroid is commonly associated with the measure of the brightness of a
 sound. This measure is obtained by evaluating the “center of gravity” using the Fourier
 transform’s frequency and magnitude information. 
@@ -64,12 +69,11 @@ spectral bin for that frequency. The centroid is usually a lot higher than one m
 intuitively expect, because there is so much more energy above (than below) the
 fundamental which contributes to the average.
 
-It is not sure if the spectral centroid would be useful for classifying different genres of
-musics. At least, it will show some spectral components of the music, which are mixed
-sounds. 
-
 Intuitive: It is center of mass of the spectrum. Since spectrum gives the indication of how the signal's mass (amplitude) is distributed among the frequencies, its center of mass indicates the average amount of amplitude. From speech perspective, it is the average loudness. From the image perspective, it is the average brightness. The mathematical equation used is, as you must be knowing or have guessed by now, weighted average. 'Weighted' because, the frequency components may be for instance non-uniformly separated (depending upon the transformation used) or due to application of filters sometimes it makes more sense to use the frequency information also into average instead of giving equal importance.
 
+Resources:
+- [Spectral Centroid] https://ccrma.stanford.edu/~unjung/AIR/areaExam.pdf
+- [Spectral Centroid] https://www.quora.com/In-an-intuitive-explanation-what-is-spectral-centroid
 
 ### Spectral Rolloff
 It is a measure of the shape of the signal. It represents the frequency at which high frequencies decline to 0. To obtain it, we have to calculate the fraction of bins in the power spectrum where 85% of its power is at lower frequencies.
@@ -90,14 +94,10 @@ A chroma feature or vector is typically a 12-element feature vector indicating h
 
 ## Resources:
 ### Most of the definitions have been extracted from the resources listed below:
-**[1]**:
-- https://www.karlsims.com/fft.html
-- https://en.wikipedia.org/wiki/Fast_Fourier_transform
 
 **[2]**
 - https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
-- https://ccrma.stanford.edu/~unjung/AIR/areaExam.pdf
-- https://www.quora.com/In-an-intuitive-explanation-what-is-spectral-centroid
+
 - https://www.analiticaweb.com.br/newsletter/02/AN51721_UV.pdf
 - https://wiki.aalto.fi/display/ITSP/Zero-crossing+rate
 - https://dev.to/zenulabidin/python-audio-processing-at-lightspeed-part-1-zignal-5658
@@ -110,7 +110,7 @@ A chroma feature or vector is typically a 12-element feature vector indicating h
 - https://github.com/reiinakano/scikit-plot/issues/87
 
 ### Most of the functions and libraries used in code have been extracted from the resources listed below:
-- https://librosa.github.io/librosa/feature.html
+- 
 - https://librosa.github.io/librosa/generated/librosa.feature.mfcc.html
 - https://github.com/codebasics/py/blob/master/ML/15_gridsearch/Exercise/15_grid_search_cv_exercise.ipynb
 - https://github.com/codebasics/py/blob/master/ML/15_gridsearch/15_grid_search.ipynb
