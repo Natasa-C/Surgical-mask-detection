@@ -38,9 +38,7 @@ We perceive sound in the frequency domain. The cochlea in our ear actually perfo
     - convert the numpy array into a series and transform each value in the series into it's absolute value 
     - create a rolling window over the signal with pandas which provides rolling window calculations and get the mean of the window (window = window size is going to be a tenth of a second which translates to a tenth of the collection rate samples (we have 44100 samples/second, so in a tenth o a second, we go over a tenth of them), min_periods = the minimum number of values that we need in our window to create a calculation, center = center the window)
 
-[**clean the data**] the function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005```. Once the data has been cleaned, we changed the paths to the data to point to the clean ones.
-
-# and write the clean files into the specified folder
+[**clean the data**] the function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005``` and write the created clean files into the specified folder. Once the data has been cleaned, we changed the paths to the data to point to the clean ones.
 
 Resources:
 - [envelope function] https://www.youtube.com/watch?v=mUXkj1BKYk0&t=289s
