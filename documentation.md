@@ -50,6 +50,8 @@ A spectrogram is a visual way of representing the signal strength, or “loudnes
 
 The functions used to extract the features come, mainly, from ```librosa.feature``` library.
 
+The features are extracted in separate directories for the raw data and for the clean data and stored in .csv files. The general features are stored separately from the mfcc values.
+
 Resources:
 - [librosa.feature] https://librosa.github.io/librosa/feature.html
 -  [definitions and implementation examples] https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
@@ -109,31 +111,39 @@ A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourie
 Resources:
 - [fft] https://www.karlsims.com/fft.html
 - [fft] https://en.wikipedia.org/wiki/Fast_Fourier_transform
-- [numpy.fft] [https://numpy.org/doc/stable/reference/routines.fft.html](https://numpy.org/doc/stable/reference/routines.fft.html)
+- [numpy.fft] https://numpy.org/doc/stable/reference/routines.fft.html
+- [explanations and examples] https://www.mathworks.com/help/signal/examples/practical-introduction-to-frequency-domain-analysis.html
 
-## Resources:
-### Most of the definitions have been extracted from the resources listed below:
+## [4] Hyperparameter Tuning
 
-**[M]**
+I used ```sklearn.model_selection.GridSearchCV``` to try different parameters for ```sklearn.svm.SVC``` and ```sklearn.neural_network.MLPClassifier``` models.
 
-
-**[PLOTING]**
-- https://github.com/reiinakano/scikit-plot/issues/87
-
-### Most of the functions and libraries used in code have been extracted from the resources listed below:
-- 
-https://musicinformationretrieval.com/spectral_features.html
+Resources:
 - https://github.com/codebasics/py/blob/master/ML/15_gridsearch/Exercise/15_grid_search_cv_exercise.ipynb
 - https://github.com/codebasics/py/blob/master/ML/15_gridsearch/15_grid_search.ipynb
 - https://www.youtube.com/watch?v=HdlDYng8g9s
 - https://www.youtube.com/watch?v=pooXM9mM7FU
 - https://www.kaggle.com/funxexcel/p2-logistic-regression-hyperparameter-tuning
 
-Other related posts:
+## [5] Standardization/Normalization
+I used ```sklearn.preprocessing.scale```, ```sklearn.preprocessing.StandardScaler``` and ```sklearn.preprocessing.normalize``` for scaling and normalizing data.
+
+Resources:
+- [standardization/normalization] https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/?fbclid=IwAR31clqIFgUfDgvh4GoU4TY-Qgse1qOuDdQp6wVu8qzr2BnxBfkZFOX9hYU
+
+## [6] Ploting
+
+I used ```skplt.metrics.plot_precision_recall_curve``` and ```skplt.metrics.plot_confusion_matrix``` for plotting in order to analyze parameters.
+
+Resources:
+ - https://github.com/reiinakano/scikit-plot/issues/87
+
+
+## [other related] Resources:
 - https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html?fbclid=IwAR1w6-IcQ3yvuH2frW3vEDl7CqeC4yY6KOnrrZKSMz2b_MHO6qadmj-PSKg
 - https://dev.to/zenulabidin/python-audio-processing-at-lightspeed-part-1-zignal-5658
 
+https://musicinformationretrieval.com/spectral_features.html
 
 
-- [standardization/normalization] https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/?fbclid=IwAR31clqIFgUfDgvh4GoU4TY-Qgse1qOuDdQp6wVu8qzr2BnxBfkZFOX9hYU
 
