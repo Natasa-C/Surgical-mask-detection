@@ -100,14 +100,16 @@ Resources:
 - [tutorial] http://practicalcryptography.com/miscellaneous/machine-learning/guide-mel-frequency-cepstral-coefficients-mfccs/
 - [explanation with graphics] https://medium.com/@LeonFedden/comparative-audio-analysis-with-wavenet-mfccs-umap-t-sne-and-pca-cb8237bfce2f
 
-### Chroma feature
+### [2.6] Chroma feature
 A chroma feature or vector is typically a 12-element feature vector indicating how much energy of each pitch class, {C, C#, D, D#, E, …, B}, is present in the signal. In short, It provides a robust way to describe a similarity measure between music pieces.
 
-**fft**: A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa.
+### [2.7] FFT - frequency and magnitude
+A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa.
 
 Resources:
 - [fft] https://www.karlsims.com/fft.html
 - [fft] https://en.wikipedia.org/wiki/Fast_Fourier_transform
+- [numpy.fft] [https://numpy.org/doc/stable/reference/routines.fft.html](https://numpy.org/doc/stable/reference/routines.fft.html)
 
 ## Resources:
 ### Most of the definitions have been extracted from the resources listed below:
@@ -120,7 +122,7 @@ Resources:
 
 ### Most of the functions and libraries used in code have been extracted from the resources listed below:
 - 
-[https://musicinformationretrieval.com/spectral_features.html](https://musicinformationretrieval.com/spectral_features.html)
+https://musicinformationretrieval.com/spectral_features.html
 - https://github.com/codebasics/py/blob/master/ML/15_gridsearch/Exercise/15_grid_search_cv_exercise.ipynb
 - https://github.com/codebasics/py/blob/master/ML/15_gridsearch/15_grid_search.ipynb
 - https://www.youtube.com/watch?v=HdlDYng8g9s
