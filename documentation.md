@@ -34,12 +34,16 @@ The audio files are provided in .wav format.
 
 We perceive sound in the frequency domain. The cochlea in our ear actually performs a biological Fourier transform by converting sound waves into neural signals of frequency amplitudes. It can be useful to also process digital audio signals in the frequency domain. For example tuning the lows, mids, and highs of an audio signal could be done by performing a Fourier transform on the time domain samples, scaling the various frequencies as desired, and then converting back to an audio signal with an inverse Fourier transform.
 
-1. create an envelope function used to create a mask with True/False values which will be used to reduce the empty/under the threshold portions of data
+[ **envelope**] create an envelope function used to create a mask with True/False values which will be used to reduce the empty/under the threshold portions of data
     - convert the numpy array into a series and transform each value in the series into it's absolute value 
     - create a rolling window over the signal with pandas which provides rolling window calculations and get the mean of the window (window = window size is going to be a tenth of a second which translates to a tenth of the collection rate samples (we have 44100 samples/second, so in a tenth o a second, we go over a tenth of them), min_periods = the minimum number of values that we need in our window to create a calculation, center = center the window)
 
+[**clean the data**] the function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005```. Once the data has been cleaned, we changed the paths to the data to point to the clean ones.
+
+# and write the clean files into the specified folder
+
 Resources:
-- [envelope/fft] https://www.youtube.com/watch?v=mUXkj1BKYk0&t=289s
+- [envelope function] https://www.youtube.com/watch?v=mUXkj1BKYk0&t=289s
 - [series/rolling window] https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html
 
 
