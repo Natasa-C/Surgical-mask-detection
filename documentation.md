@@ -171,6 +171,10 @@ I used ```skplt.metrics.plot_precision_recall_curve``` and ```skplt.metrics.plot
 
 Resources:
  - https://github.com/reiinakano/scikit-plot/issues/87
+ 
+## [7] Precision. Recall. Accuracy
+
+I used ```sklearn.metrics``` to import ```recall_score``` and ```average_precision_score``` in order to calculate recall and precision for the validation data set. I calculated accuracy manually, comparing the obtained predictions and the real labels for the validation data set.
 
 
 ## [other related] Resources:
