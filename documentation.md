@@ -1,4 +1,5 @@
 
+
 # Surgical mask detection
 #### Discriminate between utterances with and without surgical mask
 
@@ -120,6 +121,32 @@ Spectral contrast considers the spectral peak, the spectral valley, and their di
 Resources:
 - https://musicinformationretrieval.com/spectral_features.html
 
+## [3] Models
+
+### [3.1] Support Vector Machines 
+
+I implemented the SVM  using ```sklearn.svm.SVC```(C-Support Vector Classification).
+
+Parameters:
+- **C**: 
+- **kernel**:
+- **gamma**:
+
+Resources:
+- [SVC] https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
+
+### [3.2] Neural Network
+
+I implemented the neural network  using ```sklearn.neural_network.MLPClassifier``` (C-Support Vector Classification).
+
+Parameters:
+- **activation**: 
+- **solver**:
+- **max_iter**:
+
+Resources:
+- [MLPClassifier] https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
+
 
 ## [4] Hyperparameter Tuning
 
@@ -149,8 +176,6 @@ Resources:
 ## [other related] Resources:
 - https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html?fbclid=IwAR1w6-IcQ3yvuH2frW3vEDl7CqeC4yY6KOnrrZKSMz2b_MHO6qadmj-PSKg
 - https://dev.to/zenulabidin/python-audio-processing-at-lightspeed-part-1-zignal-5658
-
-https://musicinformationretrieval.com/spectral_features.html
 
 
 
