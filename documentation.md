@@ -362,9 +362,9 @@ I implemented the SVM  using ```sklearn.svm.SVC```(C-Support Vector Classificati
 
 #### [6.1.1] Parameters:
 - ```probability: True``` We need to compute probabilities in order to plot the precision-recall curve. To compute probabilities of possible outcomes for samples in X, the model needs to have probability information computed at training time: fit with attribute  `probability`  set to True. 
-- ```C: 5 ```  Regularization parameter. The strength of the regularization is inversely proportional to C. Intuitively, larger C -> more squiggly,  smaller C -> less squiggly
+- ```C: 5 ```  Regularization parameter. The strength of the regularization is inversely proportional to C. Intuitively, larger C -> more squiggly (a plane with very few misclassifications  will be given precedence.),  smaller C -> less squiggly (planes that separate the points well  will be found, even if there are some  misclassifications)
 - ```kernel: 'rbf'```
-- ```gamma: 0.001``` Kernel coefficient for ‘rbf’
+- ```gamma: 0.001``` Kernel coefficient for ‘rbf’. A small gamma will give you low bias and high variance while a large gamma will give you higher bias and low variance.
 
 #### [6.1.2] Code:
 ```python
@@ -394,10 +394,8 @@ def svcAlgorithm(self):
 	plt.show()
 
 	# calculate recall, precision and accuracy
-	self.recall = round(recall_score(
-	self.validation_labels, predictions), 3)
-	self.precision = round(average_precision_score(
-	self.validation_labels, predictions), 3)
+	self.recall = round(recall_score(self.validation_labels, predictions), 3)
+	self.precision = round(average_precision_score(self.validation_labels, predictions), 3)
 	self.accuracy = np.mean(predictions == self.validation_labels)
 
 	print("predict test features... ")
@@ -450,6 +448,7 @@ Private score: 0.63428
 
 Resources:
 - [SVC] https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
+- [parameters] http://queirozf.com/entries/choosing-c-hyperparameter-for-svm-classifiers-examples-with-scikit-learn
 
 ### [6.2] Neural Network - sklearn
 
@@ -457,7 +456,7 @@ I implemented the neural network  using ```sklearn.neural_network.MLPClassifier`
 
 #### [6.2.1] Parameters:
 - `hidden_layer_sizes=(100,)`The ith element represents the number of neurons in the ith hidden layer.
-- `random_state=1` Determines random number generation for weights and bias initialization, train-test split if early stopping is used, and batch sampling when solver=’sgd’ or ‘adam’. Pass an int for reproducible results across multiple function calls.
+- `random_state=1` Determines random number generation for weights and bias initialization, train-test split if early stopping is used, and batch sampling when solver=’sgd’ or ‘adam’. *Pass an int for reproducible results across multiple function calls.*
 - `max_iter=200` Maximum number of iterations.
 - `early_stopping=False`Whether to use early stopping to terminate training when validation score is not improving.
 
@@ -472,8 +471,7 @@ def  neuralAlgorithm(self):
 	self.standardizationScale()
 
 	print("\nfit train features... ")
-	clf = MLPClassifier(hidden_layer_sizes=(100,), random_state=1, max_iter=200, early_stopping=False).fit(
-	self.train_features, self.train_labels)
+	clf = MLPClassifier(hidden_layer_sizes=(100,), random_state=1, max_iter=200, early_stopping=False).fit(self.train_features, self.train_labels)
 	print("fit train features... done")
 
 	print("predict validation features... ")
@@ -552,7 +550,8 @@ Resources:
 I implemented the neural network  using `tf.keras.Sequential`.
 
 #### [6.3.1] Parameters:
-I created 5 layers with the following structure and I added a dropout after each one of them, except for the last one.
+I created 5 layers with the following structure and I added a dropout after each one of them, except for the last one. Dropout is a technique where randomly selected neurons are ignored during training so their contribution to the activation of downstream neurons is temporally removed on the forward pass and any weight updates are not applied to the neuron on the backward pass. [source](https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/)
+
 ```python
 model.add(Dense(units=110, input_dim=55, activation='relu'))
 model.add(Dense(units=70, activation='relu'))
@@ -560,6 +559,15 @@ model.add(Dense(units=50, activation='relu'))
 model.add(Dense(units=20, activation='relu'))
 model.add(Dense(units=1, activation='sigmoid'))
 ```
+
+For the `model.compile` I used the following parameters:
+- `loss="binary_crossentropy"` **binary** classification as I have two target classes (class 0 and class 1) [info](https://stackoverflow.com/questions/42081257/why-binary-crossentropy-and-categorical-crossentropy-give-different-performances)
+- `optimizer="adam"`
+- `metrics=['accuracy']` 
+	
+For the `model.fit` I used the following parameters:
+- `epochs=200` the number of epochs is a hyperparameter that defines the number times that the learning algorithm will work through the entire training dataset
+- `batch_size=50` the batch size defines the number of samples that will be propagated through the network
 
 #### [6.3.2] Code:
 ```python
@@ -661,10 +669,12 @@ Resources:
 - [implementation] https://github.com/jg-fisher/diabetesNeuralNetwork/blob/master/keras_diabetes_classification.py
 - [predictions] https://machinelearningmastery.com/how-to-make-classification-and-regression-predictions-for-deep-learning-models-in-keras/
 - [dropout] https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/
+- [batch size] https://stats.stackexchange.com/questions/153531/what-is-batch-size-in-neural-network
 - https://towardsdatascience.com/how-to-apply-machine-learning-and-deep-learning-methods-to-audio-analysis-615e286fcbbc
 - [functions and parameters] https://keras.io/api/models/model/#model-class
 - [overfitting] https://www.youtube.com/watch?v=Gf5DO6br0ts&list=PL-wATfeyAMNrtbkCNsLcpoAyBBRJZVlnf&index=14
 - https://www.infoworld.com/article/3336192/what-is-keras-the-deep-neural-network-api-explained.html
+- [binary_crossentropy] https://stackoverflow.com/questions/42081257/why-binary-crossentropy-and-categorical-crossentropy-give-different-performances
 
 
 ## [7] Hyperparameter Tuning
