@@ -4,6 +4,7 @@
 #### Discriminate between utterances with and without surgical mask
 Kaggle competition link: [https://www.kaggle.com/c/ml-fmi-23-2020](https://www.kaggle.com/c/ml-fmi-23-2020)
 
+Project repository link: https://github.com/Natasa-C/Surgical-mask-detection
 
 ## Table of Contents
 - [Data Description](#data-description)
