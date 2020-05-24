@@ -1,5 +1,6 @@
 
 
+
 # Surgical mask detection
 #### Discriminate between utterances with and without surgical mask
 Kaggle competition link: [https://www.kaggle.com/c/ml-fmi-23-2020](https://www.kaggle.com/c/ml-fmi-23-2020)
@@ -8,7 +9,7 @@ Kaggle competition link: [https://www.kaggle.com/c/ml-fmi-23-2020](https://www.k
 ## Table of Contents
 - [Data Description](#data-description)
 - [Research and code implementation](#research-and-code-implementation)
-	1.  [Setting the data paths. Reading and storing the data](#setting-the-data-paths.-reading-and-storing-the-data.)
+	1. [Setting the data paths. Reading and storing the data](#setting-the-data-paths.-reading-and-storing-the-data.)
 	2. [ Preprocessing: cleaning the data](#preprocessing-cleaning-the-data)
 	3. [Audio spectrogram and feature extraction](#audio-spectrogram-and-feature-extraction)
 	4. [Definitions for some of the extracted features](#definitions-for-some-of-the-extracted-features)
@@ -121,9 +122,11 @@ def  envelope(self, signal, rate, threshold):
 	# to reduce the empty/under the threshold portions of data
 	mask = []
 	y = copy.deepcopy(signal)
-	# convert the numpy array into a series and transform each value in the series into it's absolute value
+	# convert the numpy array into a series and transform each value 
+	# in the series into it's absolute value
 	y = pd.Series(y).apply(np.abs)
-	# create a rolling window over the signal with pandas which provides rolling window calculations
+	# create a rolling window over the signal with pandas 
+	# which provides rolling window calculations
 	# and get the mean of the window
 	y_mean = y.rolling(window=int(rate/10),min_periods=1, center=True).mean()
 	# create the True/False mask based on the threshold
@@ -156,9 +159,11 @@ def  cleanData(self):
 	    # clean validation data
 	    ......
 	else:
-		print('\nAttention: Data files have been cleaned before. If you want to clean them again, try removing old folder files and then clean again.')
+		print('\nAttention: Data files have been cleaned before. 
+		If you want to clean them again, try removing old folder files and then clean again.')
 
-	# once the data has been cleaned, we changed the paths to the data to point to the clean ones
+	# once the data has been cleaned, we changed the paths to the data to point 
+	# to the clean ones
 	self.TRAIN_DATA_PATH = self.CLEAN_TRAIN_DATA_PATH
 	self.VALIDATION_DATA_PATH = self.CLEAN_VALIDATION_DATA_PATH
 	self.TEST_DATA_PATH = self.CLEAN_TEST_DATA_PATH
@@ -192,8 +197,10 @@ def  get_fft(self, y, rate):
 ```python
 def  extractFeaturesForDataSet(self, set_of_data, names_for_data, filename):
 	# create the header for the csv file
-	to_append = f'filename,mean_spectral_centroids,mean_spectral_rolloff,mean_spectral_bandwidth_2,sum_zero_crossings,mean_mfccs,'
-	to_append += f'mean_magnitude,mean_freq,mean_chroma_stft,mean_rms,mean_bank,mean_mel,mean_spectral_contrast,mean_chroma_med,mean_melspectrogram,mean_flatness'
+	to_append = f'filename,mean_spectral_centroids,mean_spectral_rolloff,
+	mean_spectral_bandwidth_2,sum_zero_crossings,mean_mfccs,'
+	to_append += f'mean_magnitude,mean_freq,mean_chroma_stft,mean_rms,mean_bank,mean_mel,
+	mean_spectral_contrast,mean_chroma_med,mean_melspectrogram,mean_flatness'
 
 	g = open(filename, 'w')
 	g.write(to_append)
@@ -219,7 +226,8 @@ def  extractFeaturesForDataSet(self, set_of_data, names_for_data, filename):
 		magnitude, freq = self.get_fft(data, self.sr)
 
 		chroma_cqt = librosa.feature.chroma_cqt(y=data, sr=self.sr)
-		chroma_med = librosa.decompose.nn_filter(chroma_cqt, aggregate=np.median, metric='cosine')
+		chroma_med = librosa.decompose.nn_filter(chroma_cqt, aggregate=np.median, 
+		metric='cosine')
 		  
 		melspectrogram = librosa.feature.melspectrogram(y=data, sr=self.sr)
 		flatness = librosa.feature.spectral_flatness(y=data)
@@ -232,8 +240,10 @@ def  extractFeaturesForDataSet(self, set_of_data, names_for_data, filename):
 		mean_mfccs = np.mean(mfccs)
 		.........
 
-		to_append = f'\n{names_for_data[index]},{mean_spectral_centroids},{mean_spectral_rolloff},{mean_spectral_bandwidth_2},{sum_zero_crossings},{mean_mfccs},'
-		to_append += f'{mean_magnitude},{mean_freq},{mean_chroma_stft},{mean_rms},{mean_bank},{mean_mel},{mean_spectral_contrast},{mean_chroma_med},'
+		to_append = f'\n{names_for_data[index]},{mean_spectral_centroids},
+		{mean_spectral_rolloff},{mean_spectral_bandwidth_2},{sum_zero_crossings},{mean_mfccs},'
+		to_append += f'{mean_magnitude},{mean_freq},{mean_chroma_stft},{mean_rms},{mean_bank},
+		{mean_mel},{mean_spectral_contrast},{mean_chroma_med},'
 		to_append += f'{mean_melspectrogram},{mean_flatness}'
 
 		g.write(to_append)
@@ -260,7 +270,8 @@ def  extractMeanMfccsForDataSet(self, set_of_data, names_for_data, filename):
 
 	for index in tqdm(range(len(set_of_data))):
 		data = set_of_data[index]
-		mfccs = librosa.feature.mfcc(y=data, sr=self.sr, n_fft=set_n_fft, hop_length=set_hop_length, n_mfcc=set_n_mfcc)
+		mfccs = librosa.feature.mfcc(y=data, sr=self.sr, n_fft=set_n_fft, 
+		hop_length=set_hop_length, n_mfcc=set_n_mfcc)
 		mfccs = np.mean(mfccs.T, axis=0)
 		to_append = f'\n{names_for_data[index]}'
 		for ind in  range(len(mfccs)):
@@ -492,7 +503,8 @@ def  neuralAlgorithm(self):
 	self.standardizationScale()
 
 	print("\nfit train features... ")
-	clf = MLPClassifier(hidden_layer_sizes=(100,), random_state=1, max_iter=200, early_stopping=False).fit(self.train_features, self.train_labels)
+	clf = MLPClassifier(hidden_layer_sizes=(100,), random_state=1, max_iter=200, 
+	early_stopping=False).fit(self.train_features, self.train_labels)
 	print("fit train features... done")
 
 	print("predict validation features... ")
@@ -601,7 +613,8 @@ def  kerasNeuralNetwork(self):
 	self.standardizationScale()
 
 	# create model, add dense layers one by one specifying activation function
-	# Units are the dimensionality of the output space for the layer, which equals the number of hidden units
+	# Units are the dimensionality of the output space for the layer, 
+	# which equals the number of hidden units
 	model = Sequential()
 
 	# input layer requires input_dim param
@@ -621,7 +634,8 @@ def  kerasNeuralNetwork(self):
 	optimizer="adam", metrics=['accuracy'])
 
 	# The fit method does the training in batches
-	# validation_features and validation_labels are Numpy arrays --just like in the Scikit-Learn API.
+	# validation_features and validation_labels are Numpy arrays 
+	# --just like in the Scikit-Learn API.
 	model.fit(self.train_features, self.train_labels,
 	epochs=200, batch_size=50)
 	  
