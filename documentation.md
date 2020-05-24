@@ -362,7 +362,7 @@ I implemented the SVM  using ```sklearn.svm.SVC```(C-Support Vector Classificati
 
 #### [6.1.1] Parameters:
 - ```probability: True``` We need to compute probabilities in order to plot the precision-recall curve. To compute probabilities of possible outcomes for samples in X, the model needs to have probability information computed at training time: fit with attribute  `probability`  set to True. 
-- ```C: 5 ```  Regularization parameter. The strength of the regularization is inversely proportional to C. Intuitively, larger C -> more wiggly,  smaller C -> less wiggly
+- ```C: 5 ```  Regularization parameter. The strength of the regularization is inversely proportional to C. Intuitively, larger C -> more squiggly,  smaller C -> less squiggly
 - ```kernel: 'rbf'```
 - ```gamma: 0.001``` Kernel coefficient for ‘rbf’
 
@@ -753,6 +753,13 @@ Resources:
 ## [10] Precision. Recall. Accuracy
 
 I used ```sklearn.metrics``` to import ```recall_score``` and ```average_precision_score``` in order to calculate recall and precision for the validation data set. I calculated accuracy manually, comparing the obtained predictions and the real labels for the validation data set.
+
+To calculate precision, recall and accuracy for each class, I used `sklearn.metrics.classification_report`.
+
+Resources:
+- [classification_report] https://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html
+- [recall_score] https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html#sklearn.metrics.recall_score
+- [average_precision_score] https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score
 
 
 ## [11] Other related resources:
