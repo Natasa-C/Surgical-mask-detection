@@ -257,16 +257,16 @@ Resources:
 Resources:
 - https://www.analiticaweb.com.br/newsletter/02/AN51721_UV.pdf
 
-### [2.4] Zero-Crossing Rate
-By looking at different speech and audio waveforms, we can see that depending on the content, they vary a lot in their **smoothness**. For example, voiced speech sounds are more smooth than unvoiced ones. Smoothness is thus a informative characteristic of the signal.
-
-A very simple way for measuring the smoothness of a signal is to calculate the number of zero-crossing within a segment of that signal. A voice signal oscillates slowly — for example, a 100 Hz signal will cross zero 100 per second — whereas an unvoiced fricative can have 3000 zero crossings per second.
+### [4.4] Zero-Crossing Rate
+>By looking at different speech and audio waveforms, we can see that depending on the content, they vary a lot in their **smoothness**. For example, voiced speech sounds are more smooth than unvoiced ones. Smoothness is thus a informative characteristic of the signal.
+>
+>A very simple way for measuring the smoothness of a signal is to calculate the number of zero-crossing within a segment of that signal. A voice signal oscillates slowly — for example, a 100 Hz signal will cross zero 100 per second — whereas an unvoiced fricative can have 3000 zero crossings per second. [source](https://wiki.aalto.fi/display/ITSP/Zero-crossing+rate)
 
 Resources:
 - [Zero-Crossing Rate] https://wiki.aalto.fi/display/ITSP/Zero-crossing+rate
 
-### [2.5] Mel-Frequency Cepstral Coefficients(MFCCs)
-The Mel frequency cepstral coefficients (MFCCs) of a signal are a small set of features (usually about 10–20) which concisely describe the overall shape of a spectral envelope. It models the characteristics of the human voice.
+### [4.5] Mel-Frequency Cepstral Coefficients(MFCCs)
+>The Mel frequency cepstral coefficients (MFCCs) of a signal are a small set of features (usually about 10–20) which concisely describe the overall shape of a spectral envelope. It models the characteristics of the human voice. [source](https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html)
 
 As I mentioned earlier, I stored the MFCCs in a separate .csv file to make the loading of the extracted data more intuitive and more flexible regarding the number of features extracted.
 
@@ -277,11 +277,14 @@ Resources:
 - [tutorial] http://practicalcryptography.com/miscellaneous/machine-learning/guide-mel-frequency-cepstral-coefficients-mfccs/
 - [explanation with graphics] https://medium.com/@LeonFedden/comparative-audio-analysis-with-wavenet-mfccs-umap-t-sne-and-pca-cb8237bfce2f
 
-### [2.6] Chroma feature
-A chroma feature or vector is typically a 12-element feature vector indicating how much energy of each pitch class, {C, C#, D, D#, E, …, B}, is present in the signal. In short, It provides a robust way to describe a similarity measure between music pieces.
+### [4.6] Chroma feature
+A chroma feature or vector is typically a 12-element feature vector indicating how much energy of each pitch class, {C, C#, D, D#, E, …, B}, is present in the signal. In short, It provides a robust way to describe a similarity measure between music pieces. [source](https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html)
 
-### [2.7] FFT - frequency and magnitude
-A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa.
+Resources:
+ - https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
+ 
+### [4.7] FFT - frequency and magnitude
+A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa. [source](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
 
 Resources:
 - [fft] https://www.karlsims.com/fft.html
