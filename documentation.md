@@ -5,17 +5,24 @@
 Kaggle competition link: [https://www.kaggle.com/c/ml-fmi-23-2020](https://www.kaggle.com/c/ml-fmi-23-2020)
 
 
-# Table of Contents
-1. [Example](#example)
-2. [Example2](#example2)
-3. [Third Example](#third-example)
-4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
-
-
-## Example
-## Example2
-## Third Example
-## [Fourth Example](http://www.fourthexample.com) 
+## Table of Contents
+- [Data Description](#data-description)
+- [Research and code implementation](#research-and-code-implementation)
+	1.  [Setting the data paths. Reading and storing the data](#setting-the-data-paths.-reading-and-storing-the-data.)
+	2. [ Preprocessing: cleaning the data](#preprocessing-cleaning-the-data)
+	3. [Audio spectrogram and feature extraction](#audio-spectrogram-and-feature-extraction)
+	4. [Definitions for some of the extracted features](#definitions-for-some-of-the-extracted-features)
+	5. [Loading features and MFCC values](#loading-features-and-mfcc-values)
+	6. [Models](#models)
+		6.1. [Support Vector Machines](#support-vector-machines)
+		6.2. [Neural Network - sklearn](#neural-network---sklearn)
+		6.3. [Neural Network - keras](#neural-network---keras)
+	8. [Hyperparameter Tuning](#hyperparameter-tuning)
+	9. [ Standardization. Normalization](#standardization.-normalization)
+	10. [Plotting](#plotting)
+	11. [Precision. Recall. Accuracy](#precision.-recall.-accuracy) 
+	12. [Other auxiliary functions used](#other-auxiliary-functions-used)
+	13. [Other related resources](#other-related-resources)
 
 
 ## Data Description
@@ -728,7 +735,7 @@ Resources:
 - https://www.youtube.com/watch?v=pooXM9mM7FU
 - https://www.kaggle.com/funxexcel/p2-logistic-regression-hyperparameter-tuning
 
-## [8] Standardization/Normalization
+## [8] Standardization. Normalization
 I used ```sklearn.preprocessing.scale```, ```sklearn.preprocessing.StandardScaler``` and ```sklearn.preprocessing.normalize``` for scaling and normalizing data.
 
 ```python
@@ -790,6 +797,6 @@ Resources:
 - `tryDifferentModels` I implemented this function to try many models with different parameters in order to quickly find out which model is more likely to work the best
 - `tryAllFeatureCombinationsForSvc` this function tests, for a certain model, all combinations of features to find out which one will give the best results
 
-## [12] Other related resources:
+## [12] Other related resources
 - https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html?fbclid=IwAR1w6-IcQ3yvuH2frW3vEDl7CqeC4yY6KOnrrZKSMz2b_MHO6qadmj-PSKg
 - https://dev.to/zenulabidin/python-audio-processing-at-lightspeed-part-1-zignal-5658
