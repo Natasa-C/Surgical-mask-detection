@@ -278,13 +278,13 @@ Resources:
 - [explanation with graphics] https://medium.com/@LeonFedden/comparative-audio-analysis-with-wavenet-mfccs-umap-t-sne-and-pca-cb8237bfce2f
 
 ### [4.6] Chroma feature
-A chroma feature or vector is typically a 12-element feature vector indicating how much energy of each pitch class, {C, C#, D, D#, E, …, B}, is present in the signal. In short, It provides a robust way to describe a similarity measure between music pieces. [source](https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html)
+>A chroma feature or vector is typically a 12-element feature vector indicating how much energy of each pitch class, {C, C#, D, D#, E, …, B}, is present in the signal. In short, It provides a robust way to describe a similarity measure between music pieces. [source](https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html)
 
 Resources:
  - https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
  
 ### [4.7] FFT - frequency and magnitude
-A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa. [source](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
+>A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier analysis converts a signal from its original domain (often time or space) to a representation in the frequency domain and vice versa. [source](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
 
 Resources:
 - [fft] https://www.karlsims.com/fft.html
@@ -293,7 +293,7 @@ Resources:
 - [explanations and examples] https://www.mathworks.com/help/signal/examples/practical-introduction-to-frequency-domain-analysis.html
 
 ### [4.8] Spectral Contrast
-Spectral contrast considers the spectral peak, the spectral valley, and their difference in each frequency subband. For more information. [source](https://musicinformationretrieval.com/spectral_features.html)
+>Spectral contrast considers the spectral peak, the spectral valley, and their difference in each frequency subband. For more information. [source](https://musicinformationretrieval.com/spectral_features.html)
 
 Resources:
 - [Spectral Contrast] https://musicinformationretrieval.com/spectral_features.html
