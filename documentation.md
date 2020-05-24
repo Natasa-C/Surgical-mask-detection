@@ -168,54 +168,86 @@ def  get_fft(self, y, rate):
 
 ### [3.2]  Extracting features
 ```python
-# create the header for the csv file
-to_append = f'filename,mean_spectral_centroids,mean_spectral_rolloff,mean_spectral_bandwidth_2,sum_zero_crossings,mean_mfccs,'
-to_append += f'mean_magnitude,mean_freq,mean_chroma_stft,mean_rms,mean_bank,mean_mel,mean_spectral_contrast,mean_chroma_med,mean_melspectrogram,mean_flatness'
+def  extractFeaturesForDataSet(self, set_of_data, names_for_data, filename):
+	# create the header for the csv file
+	to_append = f'filename,mean_spectral_centroids,mean_spectral_rolloff,mean_spectral_bandwidth_2,sum_zero_crossings,mean_mfccs,'
+	to_append += f'mean_magnitude,mean_freq,mean_chroma_stft,mean_rms,mean_bank,mean_mel,mean_spectral_contrast,mean_chroma_med,mean_melspectrogram,mean_flatness'
 
-g = open(filename, 'w')
-g.write(to_append)
-g.close()
-
-g = open(filename, 'a')
-
-for index in tqdm(range(len(set_of_data))):
-	data = set_of_data[index]
-	
-	spectral_centroids = librosa.feature.spectral_centroid(y=data, sr=self.sr)
-	spectral_rolloff = librosa.feature.spectral_rolloff(y=data, sr=self.sr)
-	spectral_bandwidth_2 = librosa.feature.spectral_bandwidth(y=data, sr=self.sr)
-
-	zero_crossings = librosa.zero_crossings(data)
-	mfccs = librosa.feature.mfcc(y=data, sr=self.sr)
-	chroma_stft = librosa.feature.chroma_stft(y=data, sr=self.sr)
-
-	rms = librosa.feature.rms(y=data)
-	bank = logfbank(data[:self.sr], self.sr, nfilt=26, nfft=1103)
-	mel = mfcc(data, self.sr, numcep=13, nfilt=26, nfft=1103)
-	spectral_contrast = librosa.feature.spectral_contrast(data, sr=self.sr)
-	magnitude, freq = self.get_fft(data, self.sr)
-
-	chroma_cqt = librosa.feature.chroma_cqt(y=data, sr=self.sr)
-	chroma_med = librosa.decompose.nn_filter(chroma_cqt, aggregate=np.median, metric='cosine')
-	  
-	melspectrogram = librosa.feature.melspectrogram(y=data, sr=self.sr)
-	flatness = librosa.feature.spectral_flatness(y=data)
-
-	# calculate the mean or sum for the extracted features
-	mean_spectral_centroids = np.mean(spectral_centroids)
-	mean_spectral_rolloff = np.mean(spectral_rolloff)
-	mean_spectral_bandwidth_2 = np.mean(spectral_bandwidth_2)
-	sum_zero_crossings = sum(zero_crossings)
-	mean_mfccs = np.mean(mfccs)
-	.........
-
-	to_append = f'\n{names_for_data[index]},{mean_spectral_centroids},{mean_spectral_rolloff},{mean_spectral_bandwidth_2},{sum_zero_crossings},{mean_mfccs},'
-	to_append += f'{mean_magnitude},{mean_freq},{mean_chroma_stft},{mean_rms},{mean_bank},{mean_mel},{mean_spectral_contrast},{mean_chroma_med},'
-	to_append += f'{mean_melspectrogram},{mean_flatness}'
-
+	g = open(filename, 'w')
 	g.write(to_append)
-	
-g.close()
+	g.close()
+
+	g = open(filename, 'a')
+
+	for index in tqdm(range(len(set_of_data))):
+		data = set_of_data[index]
+		
+		spectral_centroids = librosa.feature.spectral_centroid(y=data, sr=self.sr)
+		spectral_rolloff = librosa.feature.spectral_rolloff(y=data, sr=self.sr)
+		spectral_bandwidth_2 = librosa.feature.spectral_bandwidth(y=data, sr=self.sr)
+
+		zero_crossings = librosa.zero_crossings(data)
+		mfccs = librosa.feature.mfcc(y=data, sr=self.sr)
+		chroma_stft = librosa.feature.chroma_stft(y=data, sr=self.sr)
+
+		rms = librosa.feature.rms(y=data)
+		bank = logfbank(data[:self.sr], self.sr, nfilt=26, nfft=1103)
+		mel = mfcc(data, self.sr, numcep=13, nfilt=26, nfft=1103)
+		spectral_contrast = librosa.feature.spectral_contrast(data, sr=self.sr)
+		magnitude, freq = self.get_fft(data, self.sr)
+
+		chroma_cqt = librosa.feature.chroma_cqt(y=data, sr=self.sr)
+		chroma_med = librosa.decompose.nn_filter(chroma_cqt, aggregate=np.median, metric='cosine')
+		  
+		melspectrogram = librosa.feature.melspectrogram(y=data, sr=self.sr)
+		flatness = librosa.feature.spectral_flatness(y=data)
+
+		# calculate the mean or sum for the extracted features
+		mean_spectral_centroids = np.mean(spectral_centroids)
+		mean_spectral_rolloff = np.mean(spectral_rolloff)
+		mean_spectral_bandwidth_2 = np.mean(spectral_bandwidth_2)
+		sum_zero_crossings = sum(zero_crossings)
+		mean_mfccs = np.mean(mfccs)
+		.........
+
+		to_append = f'\n{names_for_data[index]},{mean_spectral_centroids},{mean_spectral_rolloff},{mean_spectral_bandwidth_2},{sum_zero_crossings},{mean_mfccs},'
+		to_append += f'{mean_magnitude},{mean_freq},{mean_chroma_stft},{mean_rms},{mean_bank},{mean_mel},{mean_spectral_contrast},{mean_chroma_med},'
+		to_append += f'{mean_melspectrogram},{mean_flatness}'
+
+		g.write(to_append)
+		
+	g.close()
+```
+
+### [3.2]  Extracting MFCCs
+```python
+def  extractMeanMfccsForDataSet(self, set_of_data, names_for_data, filename):
+	set_n_mfcc = 40
+	set_n_fft = 2048
+	set_hop_length = 512
+
+	to_append = 'filename'
+	for i in  range(set_n_mfcc):
+		to_append += f',{str(i+1)}'
+
+	g = open(filename, 'w')
+	g.write(to_append)
+	g.close()
+
+	g = open(filename, 'a')
+
+	for index in tqdm(range(len(set_of_data))):
+		data = set_of_data[index]
+		mfccs = librosa.feature.mfcc(
+		y=data, sr=self.sr, n_fft=set_n_fft, hop_length=set_hop_length, n_mfcc=set_n_mfcc)
+		mfccs = np.mean(mfccs.T, axis=0)
+		to_append = f'\n{names_for_data[index]}'
+		for ind in  range(len(mfccs)):
+			to_append += f',{np.mean(mfccs[ind])}'
+
+		g.write(to_append)
+
+	g.close()
 ```
 
 Resources:
@@ -298,6 +330,30 @@ Resources:
 Resources:
 - [Spectral Contrast] https://musicinformationretrieval.com/spectral_features.html
 
+## [5] Loading features and MFCC values
+
+### [5.1] Loading features
+```python
+def  loadFeaturesForDataSet(self, filename, data_names):
+	data_features = [0] * len(data_names)
+	fd = open(filename, 'r')
+
+	# we jump over the first line which contains the names of the fields
+	for line in tqdm(fd.readlines()[1:]):
+		features = line.split(',')
+		name = features[0]
+		if name in data_names:
+			numeric_data_features = [float(elem) for elem in features[1:]]
+			data_features[data_names.index(name)] = numeric_data_features
+
+	fd.close()
+	return data_features
+```
+
+### [5.1] Loading MFCC values
+Loading MFCCs values is done similar to loading features.
+
+
 ## [3] Models
 
 ### [3.1] Support Vector Machines 
@@ -338,6 +394,29 @@ Resources:
 
 ## [5] Standardization/Normalization
 I used ```sklearn.preprocessing.scale```, ```sklearn.preprocessing.StandardScaler``` and ```sklearn.preprocessing.normalize``` for scaling and normalizing data.
+
+```python
+def  standardizationScale(self):
+	self.train_features = preprocessing.scale(self.train_features)
+	self.validation_features = preprocessing.scale(self.validation_features)
+	self.test_features = preprocessing.scale(self.test_features)
+```
+
+```python
+def  normalizationNormalize(self):
+	self.train_features = preprocessing.normalize(self.train_features)
+	self.validation_features = preprocessing.normalize(self.validation_features)
+	self.test_features = preprocessing.normalize(self.test_features)
+```
+
+```python
+def  normalizationStandardizationLab(self):
+	scaler = preprocessing.StandardScaler()
+	scaler.fit(self.train_features)
+	self.train_features = scaler.transform(self.train_features)
+	self.validation_features = scaler.transform(self.validation_features)
+	self.test_features = scaler.transform(self.test_features)
+```
 
 Resources:
 - [standardization/normalization] https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/?fbclid=IwAR31clqIFgUfDgvh4GoU4TY-Qgse1qOuDdQp6wVu8qzr2BnxBfkZFOX9hYU
