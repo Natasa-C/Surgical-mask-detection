@@ -535,15 +535,6 @@ Resources:
 - [MLPClassifier] https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
 
 
-
-
-
-
-
-
-
-
-
 ### [3.2] Neural Network - keras
 
 I implemented the neural network  using ```sklearn.neural_network.MLPClassifier``` (C-Support Vector Classification).
@@ -553,6 +544,14 @@ Parameters:
 
 
 Resources:
+- [implementation] https://www.youtube.com/watch?v=T91fsaG2L0s&fbclid=IwAR195aBLTdjq-6PEvatw6bSu398mne1pXFjrwQU9dSvxaORM_h_6NZdK6Pk
+- [implementation] https://github.com/jg-fisher/diabetesNeuralNetwork/blob/master/keras_diabetes_classification.py
+- [predictions] https://machinelearningmastery.com/how-to-make-classification-and-regression-predictions-for-deep-learning-models-in-keras/
+- https://towardsdatascience.com/how-to-apply-machine-learning-and-deep-learning-methods-to-audio-analysis-615e286fcbbc
+- [functions and parameters] https://keras.io/api/models/model/#model-class
+- [dropout] https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/
+- https://www.infoworld.com/article/3336192/what-is-keras-the-deep-neural-network-api-explained.html
+
 
 ## [4] Hyperparameter Tuning
 
