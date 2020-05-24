@@ -1,3 +1,4 @@
+
 # Surgical mask detection
 #### Discriminate between utterances with and without surgical mask
 Kaggle competition link: [https://www.kaggle.com/c/ml-fmi-23-2020](https://www.kaggle.com/c/ml-fmi-23-2020)
@@ -159,7 +160,8 @@ def  cleanData(self):
 	    ......
 	else:
 		print('\nAttention: Data files have been cleaned before. 
-		If you want to clean them again, try removing old folder files and then clean again.')
+		If you want to clean them again, try removing old folder files 
+		and then clean again.')
 
 	# once the data has been cleaned, we changed the paths to the data to point 
 	# to the clean ones
@@ -240,9 +242,10 @@ def  extractFeaturesForDataSet(self, set_of_data, names_for_data, filename):
 		.........
 
 		to_append = f'\n{names_for_data[index]},{mean_spectral_centroids},
-		{mean_spectral_rolloff},{mean_spectral_bandwidth_2},{sum_zero_crossings},{mean_mfccs},'
-		to_append += f'{mean_magnitude},{mean_freq},{mean_chroma_stft},{mean_rms},{mean_bank},
-		{mean_mel},{mean_spectral_contrast},{mean_chroma_med},'
+		{mean_spectral_rolloff},{mean_spectral_bandwidth_2},{sum_zero_crossings},
+		{mean_mfccs},'
+		to_append += f'{mean_magnitude},{mean_freq},{mean_chroma_stft},{mean_rms},
+		{mean_bank},{mean_mel},{mean_spectral_contrast},{mean_chroma_med},'
 		to_append += f'{mean_melspectrogram},{mean_flatness}'
 
 		g.write(to_append)
@@ -426,7 +429,8 @@ def svcAlgorithm(self):
 
 	# calculate recall, precision and accuracy
 	self.recall = round(recall_score(self.validation_labels, predictions), 3)
-	self.precision = round(average_precision_score(self.validation_labels, predictions), 3)
+	self.precision = round(
+	average_precision_score(self.validation_labels, predictions), 3)
 	self.accuracy = np.mean(predictions == self.validation_labels)
 
 	print("predict test features... ")
