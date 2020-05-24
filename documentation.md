@@ -32,11 +32,11 @@ The audio files are provided in .wav format.
 # Research and code implementation
 
 ## [1] Setting the data paths. Reading and storing the data.
-I created a class ```MaskDetection``` in which I defined all the data variables and methods required to solve the mask detection challenge. 
+I created a ```MaskDetection``` class  in which I defined all the data variables and methods required to solve the mask detection challenge. 
 
 ### [1.1]  Setting the paths to data
 I started by defining the paths to the data that had to be loaded for processing and for the data that had to be written out after processing. 
-```
+```python
 ...
 TRAIN_DATA_PATH = './ml-fmi-23-2020/train/train'
 VALIDATION_DATA_PATH = './ml-fmi-23-2020/validation/validation'
@@ -44,17 +44,75 @@ TEST_DATA_PATH = './ml-fmi-23-2020/test/test'
 ...
 ```
 
-### [1.2] Reading and storing the data
+### [1.2] Reading and storing the audio .wav files
+I read the audio files and stored them locally.
+```python
+...
+self.train_data = []
+self.train_names = []
 
-## [1] Initial preprocessing: cleaning the data
+# read train data
+for filepath in tqdm(glob.glob(self.TRAIN_DATA_PATH + '/*')):
+	data, sr = librosa.load(filepath, sr=self.sr)
+	self.sr = sr
+	self.train_names.append(os.path.basename(filepath))
+	self.train_data.append(data)
 
-We perceive sound in the frequency domain. The cochlea in our ear actually performs a biological Fourier transform by converting sound waves into neural signals of frequency amplitudes. It can be useful to also process digital audio signals in the frequency domain. For example tuning the lows, mids, and highs of an audio signal could be done by performing a Fourier transform on the time domain samples, scaling the various frequencies as desired, and then converting back to an audio signal with an inverse Fourier transform.
+self.train_data = np.array(self.train_data)
+...
+```
 
-[ **envelope**] I built an envelope function used to create a mask with True/False values which will be used to reduce the empty/under the threshold portions of data
-    - convert the numpy array into a series and transform each value in the series into it's absolute value 
-    - create a rolling window over the signal with pandas which provides rolling window calculations and get the mean of the window (window = window size is going to be a tenth of a second which translates to a tenth of the collection rate samples (we have 44100 samples/second, so in a tenth o a second, we go over a tenth of them), min_periods = the minimum number of values that we need in our window to create a calculation, center = center the window)
+### [1.3] Reading and storing the labels for the .wav files
+After that, I read each label for the audio files, matched it with the corresponding audio name and stored it locally.
+```python
+...
+# read train labels
+fd = open(self.TRAIN_LABELS_PATH, 'r')
+self.train_labels = [0] * len(self.train_data)
 
-[**clean the data**] the function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005``` and write the created clean files into the specified folder. Once the data has been cleaned, we changed the paths to the data to point to the clean files.
+for line in tqdm(fd.readlines()):
+	name = line.split(',')[0]
+	if name in  self.train_names:
+		self.train_labels[self.train_names.index(name)] = (int(line.split(',')[1]))
+
+fd.close()
+self.train_labels = np.array(self.train_labels)
+...
+```
+
+## [2] Preprocessing: cleaning the data
+
+> We perceive sound in the frequency domain. The cochlea in our ear actually performs a biological Fourier transform by converting sound waves into neural signals of frequency amplitudes. It can be useful to also process digital audio signals in the frequency domain. For example tuning the lows, mids, and highs of an audio signal could be done by performing a Fourier transform on the time domain samples, scaling the various frequencies as desired, and then converting back to an audio signal with an inverse Fourier transform.
+
+To remove the redundant parts of the audio files, I built an ```envelope``` function and I used it to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files.
+
+### [ 2.1]  Create an envelope function
+I built an envelope function used to create a mask with True/False values which will be used to reduce the empty/under the threshold portions of data. The function follows the next steps:
+- convert the numpy array into a series and transform each value in the series into it's absolute value 
+- create a rolling window over the signal with pandas which provides rolling window calculations and get the mean of the window (window = window size is going to be a tenth of a second which translates to a tenth of the collection rate samples (we have 44100 samples/second, so in a tenth o a second, we go over a tenth of them), min_periods = the minimum number of values that we need in our window to create a calculation, center = center the window)
+
+```python
+# create a mask with True/False values which will be used
+# to reduce the empty/under the threshold portions of data
+mask = []
+y = copy.deepcopy(signal)
+# convert the numpy array into a series and transform each value in the series into it's absolute value
+y = pd.Series(y).apply(np.abs)
+# create a rolling window over the signal with pandas which provides rolling window calculations
+# and get the mean of the window
+y_mean = y.rolling(window=int(rate/10),
+min_periods=1, center=True).mean()
+# create the True/False mask based on the threshold
+for mean in y_mean:
+	if mean > threshold:
+		mask.append(True)
+	else:
+		mask.append(False)
+return mask
+```
+
+### [2.2] Clean the data 
+This function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005``` and write the created clean files into the specified folder. Once the data has been cleaned, we changed the paths to the data to point to the clean files.
 
 Resources:
 - [envelope function] https://www.youtube.com/watch?v=mUXkj1BKYk0&t=289s
