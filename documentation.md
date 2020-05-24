@@ -100,8 +100,7 @@ y = copy.deepcopy(signal)
 y = pd.Series(y).apply(np.abs)
 # create a rolling window over the signal with pandas which provides rolling window calculations
 # and get the mean of the window
-y_mean = y.rolling(window=int(rate/10),
-min_periods=1, center=True).mean()
+y_mean = y.rolling(window=int(rate/10),min_periods=1, center=True).mean()
 # create the True/False mask based on the threshold
 for mean in y_mean:
 	if mean > threshold:
@@ -112,7 +111,33 @@ return mask
 ```
 
 ### [2.2] Clean the data 
-This function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005``` and write the created clean files into the specified folder. Once the data has been cleaned, we changed the paths to the data to point to the clean files.
+This function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005``` and write the created clean files into the specified folder. Once the data has been cleaned, we changed the paths to the data to point to the clean files. 
+
+If the folders in which the clean files are stored are empty, then the .wav files are cleaned. Otherwise, the function will specify that the files have been cleaned before and the cleaning process is no longer required. If I want to clean the files again, I would remove the old files from the folder and then run the script. As there will be are no files in the specified directory, the cleaning process will start.
+
+```python
+threshold = 0.0005
+
+if  len(os.listdir(self.TRAIN_DATA_PATH)) == 0:
+	# clean train data
+	for filepath in tqdm(glob.glob(self.TRAIN_DATA_PATH + '/*')):
+		name = os.path.basename(filepath)
+		data, sr = librosa.load(filepath, sr=self.sr)
+		mask = self.envelope(data, self.sr, threshold)
+		wavfile.write(self.TRAIN_DATA_PATH + name,
+		rate=sr, data=data[mask])
+    
+    # clean validation data
+    ......
+else:
+	print('\nAttention: Data files have been cleaned before. If you want to clean them again, try removing old folder files and then clean again.')
+
+# once the data has been cleaned, we changed the paths to the data to point to the clean ones
+self.TRAIN_DATA_PATH = self.CLEAN_TRAIN_DATA_PATH
+self.VALIDATION_DATA_PATH = self.CLEAN_VALIDATION_DATA_PATH
+self.TEST_DATA_PATH = self.CLEAN_TEST_DATA_PATH
+self.CSV_FILES_FOLDER_PATH = self.CLEAN_CSV_FILES_FOLDER_PATH
+```
 
 Resources:
 - [envelope function] https://www.youtube.com/watch?v=mUXkj1BKYk0&t=289s
@@ -259,3 +284,14 @@ I used ```sklearn.metrics``` to import ```recall_score``` and ```average_precisi
 
 
 
+# Table of Contents
+1. [Example](#example)
+2. [Example2](#example2)
+3. [Third Example](#third-example)
+4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
+
+
+## Example
+## Example2
+## Third Example
+## [Fourth Example](http://www.fourthexample.com) 
