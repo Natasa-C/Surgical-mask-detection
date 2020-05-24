@@ -30,6 +30,7 @@ Each line represents an example where:
 The audio files are provided in .wav format.
 
 # Research and code implementation
+In the documentation file, I used for exemplification fragments of the code I implemented to solve the task. 
 
 ## [1] Setting the data paths. Reading and storing the data.
 I created a ```MaskDetection``` class  in which I defined all the data variables and methods required to solve the mask detection challenge. 
@@ -37,106 +38,109 @@ I created a ```MaskDetection``` class  in which I defined all the data variables
 ### [1.1]  Setting the paths to data
 I started by defining the paths to the data that had to be loaded for processing and for the data that had to be written out after processing. 
 ```python
+class  MaskDetection():
 ...
-TRAIN_DATA_PATH = './ml-fmi-23-2020/train/train'
-VALIDATION_DATA_PATH = './ml-fmi-23-2020/validation/validation'
-TEST_DATA_PATH = './ml-fmi-23-2020/test/test'
-...
+	TRAIN_DATA_PATH = './ml-fmi-23-2020/train/train'
+	VALIDATION_DATA_PATH = './ml-fmi-23-2020/validation/validation'
+	TEST_DATA_PATH = './ml-fmi-23-2020/test/test'
+	...
 ```
 
 ### [1.2] Reading and storing the audio .wav files
 I read the audio files and stored them locally.
 ```python
-...
-self.train_data = []
-self.train_names = []
+def  readData(self):
+	...
+	self.train_data = []
+	self.train_names = []
 
-# read train data
-for filepath in tqdm(glob.glob(self.TRAIN_DATA_PATH + '/*')):
-	data, sr = librosa.load(filepath, sr=self.sr)
-	self.sr = sr
-	self.train_names.append(os.path.basename(filepath))
-	self.train_data.append(data)
+	# read train data
+	for filepath in tqdm(glob.glob(self.TRAIN_DATA_PATH + '/*')):
+		data, sr = librosa.load(filepath, sr=self.sr)
+		self.sr = sr
+		self.train_names.append(os.path.basename(filepath))
+		self.train_data.append(data)
 
-self.train_data = np.array(self.train_data)
-...
+	self.train_data = np.array(self.train_data)
+	...
 ```
 
 ### [1.3] Reading and storing the labels for the .wav files
 After that, I read each label for the audio files, matched it with the corresponding audio name and stored it locally.
 ```python
-...
-# read train labels
-fd = open(self.TRAIN_LABELS_PATH, 'r')
-self.train_labels = [0] * len(self.train_data)
+def  readLabels(self):
+	...
+	# read train labels
+	fd = open(self.TRAIN_LABELS_PATH, 'r')
+	self.train_labels = [0] * len(self.train_data)
 
-for line in tqdm(fd.readlines()):
-	name = line.split(',')[0]
-	if name in  self.train_names:
-		self.train_labels[self.train_names.index(name)] = (int(line.split(',')[1]))
+	for line in tqdm(fd.readlines()):
+		name = line.split(',')[0]
+		if name in  self.train_names:
+			self.train_labels[self.train_names.index(name)] = (int(line.split(',')[1]))
 
-fd.close()
-self.train_labels = np.array(self.train_labels)
-...
+	fd.close()
+	self.train_labels = np.array(self.train_labels)
+	...
 ```
 
 ## [2] Preprocessing: cleaning the data
 
-> We perceive sound in the frequency domain. The cochlea in our ear actually performs a biological Fourier transform by converting sound waves into neural signals of frequency amplitudes. It can be useful to also process digital audio signals in the frequency domain. For example tuning the lows, mids, and highs of an audio signal could be done by performing a Fourier transform on the time domain samples, scaling the various frequencies as desired, and then converting back to an audio signal with an inverse Fourier transform.
-
 To remove the redundant parts of the audio files, I built an ```envelope``` function and I used it to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files.
 
-### [ 2.1]  Create an envelope function
+### [ 2.1]  Creating an envelope function
 I built an envelope function used to create a mask with True/False values which will be used to reduce the empty/under the threshold portions of data. The function follows the next steps:
 - convert the numpy array into a series and transform each value in the series into it's absolute value 
 - create a rolling window over the signal with pandas which provides rolling window calculations and get the mean of the window (window = window size is going to be a tenth of a second which translates to a tenth of the collection rate samples (we have 44100 samples/second, so in a tenth o a second, we go over a tenth of them), min_periods = the minimum number of values that we need in our window to create a calculation, center = center the window)
 
 ```python
-# create a mask with True/False values which will be used
-# to reduce the empty/under the threshold portions of data
-mask = []
-y = copy.deepcopy(signal)
-# convert the numpy array into a series and transform each value in the series into it's absolute value
-y = pd.Series(y).apply(np.abs)
-# create a rolling window over the signal with pandas which provides rolling window calculations
-# and get the mean of the window
-y_mean = y.rolling(window=int(rate/10),min_periods=1, center=True).mean()
-# create the True/False mask based on the threshold
-for mean in y_mean:
-	if mean > threshold:
-		mask.append(True)
-	else:
-		mask.append(False)
-return mask
+def  envelope(self, signal, rate, threshold):
+	# create a mask with True/False values which will be used
+	# to reduce the empty/under the threshold portions of data
+	mask = []
+	y = copy.deepcopy(signal)
+	# convert the numpy array into a series and transform each value in the series into it's absolute value
+	y = pd.Series(y).apply(np.abs)
+	# create a rolling window over the signal with pandas which provides rolling window calculations
+	# and get the mean of the window
+	y_mean = y.rolling(window=int(rate/10),min_periods=1, center=True).mean()
+	# create the True/False mask based on the threshold
+	for mean in y_mean:
+		if mean > threshold:
+			mask.append(True)
+		else:
+			mask.append(False)
+	return mask
 ```
 
-### [2.2] Clean the data 
+### [2.2] Cleaning the data 
 This function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005``` and write the created clean files into the specified folder. Once the data has been cleaned, we changed the paths to the data to point to the clean files. 
 
-If the folders in which the clean files are stored are empty, then the .wav files are cleaned. Otherwise, the function will specify that the files have been cleaned before and the cleaning process is no longer required. If I want to clean the files again, I would remove the old files from the folder and then run the script. As there will be are no files in the specified directory, the cleaning process will start.
+If the folders in which the clean files are stored are empty, then the .wav files are cleaned. Otherwise, the function will specify that the files have been cleaned before and the cleaning process is no longer required. If I want to clean the files again, I would remove the old files from the folder and then run the script. As there will be no files in the specified directory, the cleaning process will start.
 
 ```python
-threshold = 0.0005
+def  cleanData(self):
+	threshold = 0.0005
 
-if  len(os.listdir(self.TRAIN_DATA_PATH)) == 0:
-	# clean train data
-	for filepath in tqdm(glob.glob(self.TRAIN_DATA_PATH + '/*')):
-		name = os.path.basename(filepath)
-		data, sr = librosa.load(filepath, sr=self.sr)
-		mask = self.envelope(data, self.sr, threshold)
-		wavfile.write(self.TRAIN_DATA_PATH + name,
-		rate=sr, data=data[mask])
-    
-    # clean validation data
-    ......
-else:
-	print('\nAttention: Data files have been cleaned before. If you want to clean them again, try removing old folder files and then clean again.')
+	if  len(os.listdir(self.TRAIN_DATA_PATH)) == 0:
+		# clean train data
+		for filepath in tqdm(glob.glob(self.TRAIN_DATA_PATH + '/*')):
+			name = os.path.basename(filepath)
+			data, sr = librosa.load(filepath, sr=self.sr)
+			mask = self.envelope(data, self.sr, threshold)
+			wavfile.write(self.TRAIN_DATA_PATH + name,
+			rate=sr, data=data[mask])
+	    
+	    # clean validation data
+	    ......
+	else:
+		print('\nAttention: Data files have been cleaned before. If you want to clean them again, try removing old folder files and then clean again.')
 
-# once the data has been cleaned, we changed the paths to the data to point to the clean ones
-self.TRAIN_DATA_PATH = self.CLEAN_TRAIN_DATA_PATH
-self.VALIDATION_DATA_PATH = self.CLEAN_VALIDATION_DATA_PATH
-self.TEST_DATA_PATH = self.CLEAN_TEST_DATA_PATH
-self.CSV_FILES_FOLDER_PATH = self.CLEAN_CSV_FILES_FOLDER_PATH
+	# once the data has been cleaned, we changed the paths to the data to point to the clean ones
+	self.TRAIN_DATA_PATH = self.CLEAN_TRAIN_DATA_PATH
+	self.VALIDATION_DATA_PATH = self.CLEAN_VALIDATION_DATA_PATH
+	self.TEST_DATA_PATH = self.CLEAN_TEST_DATA_PATH
+	self.CSV_FILES_FOLDER_PATH = self.CLEAN_CSV_FILES_FOLDER_PATH
 ```
 
 Resources:
@@ -144,13 +148,24 @@ Resources:
 - [series/rolling window] https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html
 
 
-## [2] .WAV file spectrogram and feature extraction
+## [3] Audio spectrogram and feature extraction
 
-A spectrogram is a visual way of representing the signal strength, or “loudness”, of a signal over time at various frequencies present in a particular waveform. Every audio signal consists of many features from which we must extract the characteristics that are relevant to the problem we are trying to solve. The spectral features (frequency-based features) are obtained by converting the time-based signal into the frequency domain using the Fourier Transform.
+>A spectrogram is a visual way of representing the signal strength, or “loudness”, of a signal over time at various frequencies present in a particular waveform. Every audio signal consists of many features from which we must extract the characteristics that are relevant to the problem we are trying to solve. The spectral features (frequency-based features) are obtained by converting the time-based signal into the frequency domain using the Fourier Transform. [source](https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html)
 
 The functions used to extract the features come, mainly, from ```librosa.feature``` library.
 
 The features are extracted in separate directories for the raw data and for the clean data and stored in .csv files. By making this, I reduced the preprocessing time: instead of extracting the features every time I run the script, I extract them once, at the first running, and store them in .csv files. At the next execution, I will use the data already extracted, so I reduce the feature extraction time expenses as long as I do not want to extract more features, case in which I have to rerun the script and extract the desired data. The general features are stored separately from the mfcc values  to make the loading of the extracted data more intuitive and more flexible regarding the number of features extracted.
+
+### [3.1]  Creating a function to extract frequency and magnitude
+
+```python
+def  get_fft(self, y, rate):
+	n = len(y)
+	frequency = np.fft.rfftfreq(n, d=1/rate)
+	magnitude = abs(np.fft.rfft(y)/n)
+	return (magnitude, frequency)
+```
+
 
 Resources:
 - [librosa.feature] https://librosa.github.io/librosa/feature.html
