@@ -292,11 +292,11 @@ Resources:
 - [numpy.fft] https://numpy.org/doc/stable/reference/routines.fft.html
 - [explanations and examples] https://www.mathworks.com/help/signal/examples/practical-introduction-to-frequency-domain-analysis.html
 
-### [2.8] Spectral Contrast
-Spectral contrast considers the spectral peak, the spectral valley, and their difference in each frequency subband. For more information.
+### [4.8] Spectral Contrast
+Spectral contrast considers the spectral peak, the spectral valley, and their difference in each frequency subband. For more information. [source](https://musicinformationretrieval.com/spectral_features.html)
 
 Resources:
-- https://musicinformationretrieval.com/spectral_features.html
+- [Spectral Contrast] https://musicinformationretrieval.com/spectral_features.html
 
 ## [3] Models
 
