@@ -535,27 +535,150 @@ Resources:
 - [MLPClassifier] https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
 
 
-### [3.2] Neural Network - keras
+### [6.3] Neural Network - keras
 
-I implemented the neural network  using ```sklearn.neural_network.MLPClassifier``` (C-Support Vector Classification).
+I implemented the neural network  using `tf.keras.Sequential`.
 
-Parameters:
-- ```probability: True```
+#### [6.3.1] Parameters:
+I created 5 layers with the following structure and I added a dropout after each one of them, except for the last one.
+```python
+model.add(Dense(units=110, input_dim=55, activation='relu'))
+model.add(Dense(units=70, activation='relu'))
+model.add(Dense(units=50, activation='relu'))
+model.add(Dense(units=20, activation='relu'))
+model.add(Dense(units=1, activation='sigmoid'))
+```
 
+#### [6.3.2] Code:
+```python
+def  kerasNeuralNetwork(self):
+	start_time = time.time()
+
+	self.readData()
+	self.readLabels()
+	self.loadMeanAndFeaturesAllData()
+	self.standardizationScale()
+
+	# create model, add dense layers one by one specifying activation function
+	# Units are the dimensionality of the output space for the layer, which equals the number of hidden units
+	model = Sequential()
+
+	# input layer requires input_dim param
+	model.add(Dense(units=110, input_dim=55, activation='relu'))
+	model.add(Dropout(.2))
+	model.add(Dense(units=70, activation='relu'))
+	model.add(Dropout(.2))
+	model.add(Dense(units=50, activation='relu'))
+	model.add(Dropout(.2))
+	model.add(Dense(units=20, activation='relu'))
+	model.add(Dropout(.2))
+	# sigmoid instead of relu for final probability between 0 and 1
+	model.add(Dense(units=1, activation='sigmoid'))
+
+	# The compile method configures the model’s learning process
+	model.compile(loss="binary_crossentropy",
+	optimizer="adam", metrics=['accuracy'])
+
+	# The fit method does the training in batches
+	# validation_features and validation_labels are Numpy arrays --just like in the Scikit-Learn API.
+	model.fit(self.train_features, self.train_labels,
+	epochs=200, batch_size=50)
+	  
+	# The evaluate method calculates the losses and metrics for the trained model
+	# Evaluating the model on the training set
+	score = model.evaluate(self.train_features,
+	self.train_labels, verbose=0)
+	print("Training Accuracy: {0:.3%}".format(score[1]))
+
+	# Evaluating the model on the validation set
+	score = model.evaluate(self.validation_features,
+	self.validation_labels, verbose=0)
+	print("Validation Accuracy: {0:.3%}".format(score[1]))
+
+	# Predict labels for validation data set
+	predictions = model.predict_classes(
+	self.validation_features, verbose=0)
+	predictions = [x[0] for x in predictions]
+	  
+	# calculate recall, precision and accuracy
+	self.recall = round(recall_score(
+	self.validation_labels, predictions), 3)
+	self.precision = round(average_precision_score(
+	self.validation_labels, predictions), 3)
+	self.accuracy = np.mean(predictions == self.validation_labels)
+
+	# Predict labels for test data set
+	predictions = model.predict_classes(self.test_features, verbose=0)
+	predictions = [x[0] for x in predictions]
+
+	g = open(self.OUTPUT_FILE_PATH, 'w')
+	g.write('name,label')
+
+	for index in  range(len(self.test_names)):
+		g.write(f'\n{self.test_names[index]},{predictions[index]}')
+	g.close()
+
+	stop_time = time.time()
+	self.runningTime = round(int(stop_time - start_time)/60, 2)
+```
+
+#### [6.3.3] Output:
+Output for validation data:
+```
+Training Accuracy: 99.388%
+Validation Accuracy: 78.300%
+
+Accuracy: 0.783
+Precision: 0.742
+Recall: 0.784
+```
+
+Output for test data from kaggle:
+```
+Public score: 0.63666
+Private score: 0.59857
+```
 
 Resources:
 - [implementation] https://www.youtube.com/watch?v=T91fsaG2L0s&fbclid=IwAR195aBLTdjq-6PEvatw6bSu398mne1pXFjrwQU9dSvxaORM_h_6NZdK6Pk
 - [implementation] https://github.com/jg-fisher/diabetesNeuralNetwork/blob/master/keras_diabetes_classification.py
 - [predictions] https://machinelearningmastery.com/how-to-make-classification-and-regression-predictions-for-deep-learning-models-in-keras/
+- [dropout] https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/
 - https://towardsdatascience.com/how-to-apply-machine-learning-and-deep-learning-methods-to-audio-analysis-615e286fcbbc
 - [functions and parameters] https://keras.io/api/models/model/#model-class
-- [dropout] https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/
+- [overfitting] https://www.youtube.com/watch?v=Gf5DO6br0ts&list=PL-wATfeyAMNrtbkCNsLcpoAyBBRJZVlnf&index=14
 - https://www.infoworld.com/article/3336192/what-is-keras-the-deep-neural-network-api-explained.html
 
 
-## [4] Hyperparameter Tuning
+## [7] Hyperparameter Tuning
 
 I used ```sklearn.model_selection.GridSearchCV``` to try different parameters for ```sklearn.svm.SVC``` and ```sklearn.neural_network.MLPClassifier``` models.
+
+Code for SVC hyperparameter tuning:
+
+```python
+def  svcHyperparameterTuning(self):
+	self.readData()
+	self.readLabels()
+	self.loadMeanAndFeaturesAllData()
+
+	# try many parameters to find the best ones
+	clf = GridSearchCV(SVC(gamma='auto'), {
+		'C': [1, 5, 10, 15, 20, 25, 30, 35],
+		'gamma': ['scale', 'auto', 0.1, 0.01, 0.001, 0.0001, 1, 5],
+		'kernel': ['rbf', 'linear', 'poly', 'sigmoid']
+	}, cv=5, return_train_score=False)
+
+	clf.fit(self.train_features, self.train_labels)
+	data_frame = pd.DataFrame(clf.cv_results_)
+
+	g = open(self.SVC_HYPERPARAMETER_TUNING, 'a')
+	g.write('\n\n\nNew hyperparameter tuning\n')
+	g.write(str(data_frame[['param_C', 'param_kernel', 'mean_test_score']]))
+	g.write(f'\nBest params: {clf.best_params_}')
+	g.write(f'\nBest score: {clf.best_score_}')
+	g.close()
+```
 
 Resources:
 - https://github.com/codebasics/py/blob/master/ML/15_gridsearch/Exercise/15_grid_search_cv_exercise.ipynb
@@ -564,7 +687,7 @@ Resources:
 - https://www.youtube.com/watch?v=pooXM9mM7FU
 - https://www.kaggle.com/funxexcel/p2-logistic-regression-hyperparameter-tuning
 
-## [5] Standardization/Normalization
+## [8] Standardization/Normalization
 I used ```sklearn.preprocessing.scale```, ```sklearn.preprocessing.StandardScaler``` and ```sklearn.preprocessing.normalize``` for scaling and normalizing data.
 
 ```python
@@ -593,19 +716,29 @@ def  normalizationStandardizationLab(self):
 Resources:
 - [standardization/normalization] https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/?fbclid=IwAR31clqIFgUfDgvh4GoU4TY-Qgse1qOuDdQp6wVu8qzr2BnxBfkZFOX9hYU
 
-## [6] Ploting
+## [9] Ploting
 
 I used ```skplt.metrics.plot_precision_recall_curve``` and ```skplt.metrics.plot_confusion_matrix``` for plotting in order to analyze parameters.
+
+Code for plotting fragment:
+```python
+# plot precision-recall curve and confusion matrix
+prob = model.predict_proba(self.validation_features)
+skplt.metrics.plot_precision_recall_curve(self.validation_labels, prob)
+skplt.metrics.plot_confusion_matrix(
+self.validation_labels, predictions)
+plt.show()
+```
 
 Resources:
  - https://github.com/reiinakano/scikit-plot/issues/87
  
-## [7] Precision. Recall. Accuracy
+## [10] Precision. Recall. Accuracy
 
 I used ```sklearn.metrics``` to import ```recall_score``` and ```average_precision_score``` in order to calculate recall and precision for the validation data set. I calculated accuracy manually, comparing the obtained predictions and the real labels for the validation data set.
 
 
-## [other related] Resources:
+## [11] Other related resources:
 - https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html?fbclid=IwAR1w6-IcQ3yvuH2frW3vEDl7CqeC4yY6KOnrrZKSMz2b_MHO6qadmj-PSKg
 - https://dev.to/zenulabidin/python-audio-processing-at-lightspeed-part-1-zignal-5658
 
