@@ -420,10 +420,16 @@ def svcAlgorithm(self):
 #### [6.1.3] Output:
 Output for validation data:
 ```
-Accuracy: 0.686
-Precision: 0.654
-Recall: 0.676
+              precision    recall  f1-score   support
+
+     class 0       0.66      0.70      0.68       472
+     class 1       0.71      0.68      0.69       528
+
+    accuracy                           0.69      1000
+   macro avg       0.69      0.69      0.69      1000
+weighted avg       0.69      0.69      0.69      1000
 ```
+>f1-score is a measure of a test's accuracy. It considers both the precision _p_ and the recall  _r_ of the test to compute the score: _q/p_ is the number of correct positive results divided by the number of all positive results returned by the classifier, and _r_ is the number of correct positive results divided by the number of all relevant samples (all samples that should have been identified as positive). [source](https://en.wikipedia.org/wiki/F1_score)
 
 Output for test data from kaggle:
 ```
@@ -508,10 +514,16 @@ def  neuralAlgorithm(self):
 #### [6.2.3] Output:
 Output for validation data:
 ```
-Accuracy: 0.765
-Precision: 0.721
-Recall: 0.784
+              precision    recall  f1-score   support
+
+     class 0       0.75      0.74      0.75       472
+     class 1       0.77      0.78      0.78       528
+
+    accuracy                           0.77      1000
+   macro avg       0.76      0.76      0.76      1000
+weighted avg       0.76      0.77      0.76      1000
 ```
+>f1-score is a measure of a test's accuracy. It considers both the precision _p_ and the recall  _r_ of the test to compute the score: _q/p_ is the number of correct positive results divided by the number of all positive results returned by the classifier, and _r_ is the number of correct positive results divided by the number of all relevant samples (all samples that should have been identified as positive). [source](https://en.wikipedia.org/wiki/F1_score)
 
 Output for test data from kaggle:
 ```
@@ -625,12 +637,17 @@ def  kerasNeuralNetwork(self):
 #### [6.3.3] Output:
 Output for validation data:
 ```
-Training Accuracy: 99.388%
-Validation Accuracy: 78.300%
+Training Accuracy: 99.200%
+Validation Accuracy: 79.200%
 
-Accuracy: 0.783
-Precision: 0.742
-Recall: 0.784
+              precision    recall  f1-score   support
+
+     class 0       0.78      0.78      0.78       472
+     class 1       0.80      0.81      0.80       528
+
+    accuracy                           0.79      1000
+   macro avg       0.79      0.79      0.79      1000
+weighted avg       0.79      0.79      0.79      1000
 ```
 
 Output for test data from kaggle:
