@@ -1,5 +1,0 @@
-New hyperparameter tuning
-  param_activation param_solver param_max_iter  mean_test_score
-0             relu         adam             20           0.6005
-Best params: {'activation': 'relu', 'max_iter': 20, 'solver': 'adam'}
-Best score: 0.6005
