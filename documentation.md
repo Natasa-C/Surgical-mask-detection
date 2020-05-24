@@ -434,6 +434,7 @@ Private score: 0.62761
 #### [6.1.4] Precision-recall curve and confusion matrix plots:
 ![Figure_1](https://user-images.githubusercontent.com/57111995/82756946-eef00380-9de5-11ea-953c-aafba2973e9a.png)
 ![Figure_2](https://user-images.githubusercontent.com/57111995/82756947-f0213080-9de5-11ea-9182-3ed7c12ef41d.png)
+
 #### [6.1.5] Observation:
 If we train the model on both the train and the validation data, we obtain the following score on kaggle:
 ```
@@ -444,17 +445,104 @@ Private score: 0.63428
 Resources:
 - [SVC] https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
 
-### [3.2] Neural Network - sklearn
+### [6.2] Neural Network - sklearn
 
-I implemented the neural network  using ```sklearn.neural_network.MLPClassifier``` (C-Support Vector Classification).
+I implemented the neural network  using ```sklearn.neural_network.MLPClassifier``` (C-Support Vector Classification). The definitions for parameters have been take from [MLPClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html).
 
-Parameters:
-- **activation**: 
-- **solver**:
-- **max_iter**:
+#### [6.2.1] Parameters:
+- `hidden_layer_sizes=(100,)`The ith element represents the number of neurons in the ith hidden layer.
+- `random_state=1` Determines random number generation for weights and bias initialization, train-test split if early stopping is used, and batch sampling when solver=’sgd’ or ‘adam’. Pass an int for reproducible results across multiple function calls.
+- `max_iter=200` Maximum number of iterations.
+- `early_stopping=False`Whether to use early stopping to terminate training when validation score is not improving.
+
+#### [6.2.2] Code:
+```python
+def  neuralAlgorithm(self):
+	start_time = time.time()
+
+	self.readData()
+	self.readLabels()
+	self.loadMeanAndFeaturesAllData()
+	self.standardizationScale()
+
+	print("\nfit train features... ")
+	clf = MLPClassifier(hidden_layer_sizes=(100,), random_state=1, max_iter=200, early_stopping=False).fit(
+	self.train_features, self.train_labels)
+	print("fit train features... done")
+
+	print("predict validation features... ")
+	predictions = clf.predict(self.validation_features)
+	print("predict validation features... done")
+
+	# plot precision-recall curve and confusion matrix
+	prob = clf.predict_proba(self.validation_features)
+	skplt.metrics.plot_precision_recall_curve(self.validation_labels, prob)
+	skplt.metrics.plot_confusion_matrix(
+	self.validation_labels, predictions)
+	plt.show()
+
+	# calculate recall, precision and accuracy
+	self.recall = round(recall_score(
+	self.validation_labels, predictions), 3)
+	self.precision = round(average_precision_score(
+	self.validation_labels, predictions), 3)
+	self.accuracy = clf.score(
+	self.validation_features, self.validation_labels)
+
+	print("predict test features... ")
+	predictions = clf.predict(self.test_features)
+	print("predict test features... done")
+	  
+	# create the submission file with the .wav file name and the predicted value
+	g = open(self.OUTPUT_FILE_PATH, 'w')
+	g.write('name,label')
+	for index in  range(len(self.test_names)):
+	g.write(f'\n{self.test_names[index]},{predictions[index]}')
+	g.close()
+
+	# calculate the amount of time the algorithm has been running for
+	stop_time = time.time()
+	self.runningTime = round(int(stop_time - start_time)/60, 2)
+```
+
+#### [6.2.3] Output:
+Output for validation data:
+```
+Accuracy: 0.765
+Precision: 0.721
+Recall: 0.784
+```
+
+Output for test data from kaggle:
+```
+Public score: 0.60555
+Private score: 0.61142
+```
+
+#### [6.2.4] Precision-recall curve and confusion matrix plots:
+
+![Figure_12](https://user-images.githubusercontent.com/57111995/82757596-29f43600-9dea-11ea-96fe-cc162acd1d28.png)
+![Figure_22](https://user-images.githubusercontent.com/57111995/82757599-2b256300-9dea-11ea-95be-a2c3f2573ba3.png)
+
+#### [6.1.5] Observation:
+If we train the model on both the train and the validation data, we obtain the following score on kaggle:
+```
+Public score: 0.65444
+Private score: 0.63571
+```
 
 Resources:
 - [MLPClassifier] https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
+
+
+
+
+
+
+
+
+
+
 
 ### [3.2] Neural Network - keras
 
