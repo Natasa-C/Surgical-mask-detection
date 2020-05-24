@@ -432,10 +432,8 @@ Private score: 0.62761
 ```
 
 #### [6.1.4] Precision-recall curve and confusion matrix plots:
-
-| ![Figure_1](https://user-images.githubusercontent.com/57111995/82756946-eef00380-9de5-11ea-953c-aafba2973e9a.png)   |      ![Figure_2](https://user-images.githubusercontent.com/57111995/82756947-f0213080-9de5-11ea-9182-3ed7c12ef41d.png)      | 
-
-
+![Figure_1](https://user-images.githubusercontent.com/57111995/82756946-eef00380-9de5-11ea-953c-aafba2973e9a.png)
+![Figure_2](https://user-images.githubusercontent.com/57111995/82756947-f0213080-9de5-11ea-9182-3ed7c12ef41d.png)
 #### [6.1.5] Observation:
 If we train the model on both the train and the validation data, we obtain the following score on kaggle:
 ```
