@@ -152,7 +152,7 @@ Resources:
 
 >A spectrogram is a visual way of representing the signal strength, or “loudness”, of a signal over time at various frequencies present in a particular waveform. Every audio signal consists of many features from which we must extract the characteristics that are relevant to the problem we are trying to solve. The spectral features (frequency-based features) are obtained by converting the time-based signal into the frequency domain using the Fourier Transform. [source](https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html)
 
-The functions used to extract the features come, mainly, from ```librosa.feature``` library.
+The functions used to extract the features come, mainly, from ```librosa.feature``` and ```numpy``` library.
 
 The features are extracted in separate directories for the raw data and for the clean data and stored in .csv files. By making this, I reduced the preprocessing time: instead of extracting the features every time I run the script, I extract them once, at the first running, and store them in .csv files. At the next execution, I will use the data already extracted, so I reduce the feature extraction time expenses as long as I do not want to extract more features, case in which I have to rerun the script and extract the desired data. The general features are stored separately from the mfcc values  to make the loading of the extracted data more intuitive and more flexible regarding the number of features extracted.
 
@@ -223,30 +223,36 @@ Resources:
 - [librosa.feature] https://librosa.github.io/librosa/feature.html
 -  [implementation examples] https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
 
-### [2.1] Spectral Centroid
-The spectral centroid is commonly associated with the measure of the brightness of a
+## [4] Definitions for some of the extracted features
+The definitions below have been extracted from different sources from the internet. They helped me better understand the concepts. I have links to the original posts and pages for each of them for further reading. 
+
+### [4.1] Spectral Centroid
+>The spectral centroid is commonly associated with the measure of the brightness of a
 sound. This measure is obtained by evaluating the “center of gravity” using the Fourier
 transform’s frequency and magnitude information. 
-
-In practice, centroid finds this frequency for a given frame, and then finds the nearest
+>...
+>In practice, centroid finds this frequency for a given frame, and then finds the nearest
 spectral bin for that frequency. The centroid is usually a lot higher than one might
 intuitively expect, because there is so much more energy above (than below) the
-fundamental which contributes to the average.
+fundamental which contributes to the average.[source](https://ccrma.stanford.edu/~unjung/AIR/areaExam.pdf)
 
-Intuitive: It is center of mass of the spectrum. Since spectrum gives the indication of how the signal's mass (amplitude) is distributed among the frequencies, its center of mass indicates the average amount of amplitude. From speech perspective, it is the average loudness. From the image perspective, it is the average brightness. The mathematical equation used is, as you must be knowing or have guessed by now, weighted average. 'Weighted' because, the frequency components may be for instance non-uniformly separated (depending upon the transformation used) or due to application of filters sometimes it makes more sense to use the frequency information also into average instead of giving equal importance.
+>Intuitive: It is center of mass of the spectrum. Since spectrum gives the indication of how the signal's mass (amplitude) is distributed among the frequencies, its center of mass indicates the average amount of amplitude. From speech perspective, it is the average loudness. From the image perspective, it is the average brightness. The mathematical equation used is, as you must be knowing or have guessed by now, weighted average. 'Weighted' because, the frequency components may be for instance non-uniformly separated (depending upon the transformation used) or due to application of filters sometimes it makes more sense to use the frequency information also into average instead of giving equal importance.[source](https://www.quora.com/In-an-intuitive-explanation-what-is-spectral-centroid)
 
 Resources:
 - [Spectral Centroid] https://ccrma.stanford.edu/~unjung/AIR/areaExam.pdf
 - [Spectral Centroid] https://www.quora.com/In-an-intuitive-explanation-what-is-spectral-centroid
 
-### [2.2] Spectral Rolloff
-It is a measure of the shape of the signal. It represents the frequency at which high frequencies decline to 0. To obtain it, we have to calculate the fraction of bins in the power spectrum where 85% (the default in ```librosa.feature.spectral_rolloff```) of its power is at lower frequencies. Intuitively, the roll-off frequency is defined as the frequency under which some percentage (cutoff) of the total energy of the spectrum is contained. The roll-off frequency can be used to distinguish between harmonic (below roll-off) and noisy sounds (above roll-off)
+### [4.2] Spectral Rolloff
+>It is a measure of the shape of the signal. It represents the frequency at which high frequencies decline to 0. To obtain it, we have to calculate the fraction of bins in the power spectrum where 85% of its power is at lower frequencies. [source](https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html)
+
+>The roll-off frequency is defined as the frequency under which some percentage (cutoff) of the total energy of the spectrum is contained. The roll-off frequency can be used to distinguish between harmonic (below roll-off) and noisy sounds (above roll-off) [source](https://essentia.upf.edu/reference/streaming_RollOff.html)
 
 Resources:
 - [roll-off frequency] https://essentia.upf.edu/reference/streaming_RollOff.html
+- [Spectral Rolloff] https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
 
-### [2.3] Spectral Bandwidth
-The spectral bandwidth is defined as the width of the band of light at one-half the peak maximum (or full width at half maximum [FWHM]) and is represented by the two vertical red lines and λSB on the wavelength axis.
+### [4.3] Spectral Bandwidth
+>The spectral bandwidth is defined as the width of the band of light at one-half the peak maximum (or full width at half maximum [FWHM]) and is represented by the two vertical red lines and λSB on the wavelength axis. [source](https://www.analiticaweb.com.br/newsletter/02/AN51721_UV.pdf)
 
 Resources:
 - https://www.analiticaweb.com.br/newsletter/02/AN51721_UV.pdf
