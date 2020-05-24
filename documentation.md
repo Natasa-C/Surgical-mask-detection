@@ -166,10 +166,62 @@ def  get_fft(self, y, rate):
 	return (magnitude, frequency)
 ```
 
+### [3.2]  Extracting features
+```python
+# create the header for the csv file
+to_append = f'filename,mean_spectral_centroids,mean_spectral_rolloff,mean_spectral_bandwidth_2,sum_zero_crossings,mean_mfccs,'
+to_append += f'mean_magnitude,mean_freq,mean_chroma_stft,mean_rms,mean_bank,mean_mel,mean_spectral_contrast,mean_chroma_med,mean_melspectrogram,mean_flatness'
+
+g = open(filename, 'w')
+g.write(to_append)
+g.close()
+
+g = open(filename, 'a')
+
+for index in tqdm(range(len(set_of_data))):
+	data = set_of_data[index]
+	
+	spectral_centroids = librosa.feature.spectral_centroid(y=data, sr=self.sr)
+	spectral_rolloff = librosa.feature.spectral_rolloff(y=data, sr=self.sr)
+	spectral_bandwidth_2 = librosa.feature.spectral_bandwidth(y=data, sr=self.sr)
+
+	zero_crossings = librosa.zero_crossings(data)
+	mfccs = librosa.feature.mfcc(y=data, sr=self.sr)
+	chroma_stft = librosa.feature.chroma_stft(y=data, sr=self.sr)
+
+	rms = librosa.feature.rms(y=data)
+	bank = logfbank(data[:self.sr], self.sr, nfilt=26, nfft=1103)
+	mel = mfcc(data, self.sr, numcep=13, nfilt=26, nfft=1103)
+	spectral_contrast = librosa.feature.spectral_contrast(data, sr=self.sr)
+	magnitude, freq = self.get_fft(data, self.sr)
+
+	chroma_cqt = librosa.feature.chroma_cqt(y=data, sr=self.sr)
+	chroma_med = librosa.decompose.nn_filter(chroma_cqt, aggregate=np.median, metric='cosine')
+	  
+	melspectrogram = librosa.feature.melspectrogram(y=data, sr=self.sr)
+	flatness = librosa.feature.spectral_flatness(y=data)
+
+	# calculate the mean or sum for the extracted features
+	mean_spectral_centroids = np.mean(spectral_centroids)
+	mean_spectral_rolloff = np.mean(spectral_rolloff)
+	mean_spectral_bandwidth_2 = np.mean(spectral_bandwidth_2)
+	sum_zero_crossings = sum(zero_crossings)
+	mean_mfccs = np.mean(mfccs)
+	.........
+
+	to_append = f'\n{names_for_data[index]},{mean_spectral_centroids},{mean_spectral_rolloff},{mean_spectral_bandwidth_2},{sum_zero_crossings},{mean_mfccs},'
+	to_append += f'{mean_magnitude},{mean_freq},{mean_chroma_stft},{mean_rms},{mean_bank},{mean_mel},{mean_spectral_contrast},{mean_chroma_med},'
+	to_append += f'{mean_melspectrogram},{mean_flatness}'
+
+	g.write(to_append)
+	
+g.close()
+```
 
 Resources:
+- [fft function] https://www.youtube.com/watch?v=mUXkj1BKYk0&t=289s
 - [librosa.feature] https://librosa.github.io/librosa/feature.html
--  [definitions and implementation examples] https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
+-  [implementation examples] https://www.kdnuggets.com/2020/02/audio-data-analysis-deep-learning-python-part-1.html
 
 ### [2.1] Spectral Centroid
 The spectral centroid is commonly associated with the measure of the brightness of a
