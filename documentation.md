@@ -2,6 +2,7 @@
 
 # Surgical mask detection
 #### Discriminate between utterances with and without surgical mask
+Kaggle competition link: [https://www.kaggle.com/c/ml-fmi-23-2020](https://www.kaggle.com/c/ml-fmi-23-2020)
 
 ## Data Description
 #### Task
@@ -238,8 +239,7 @@ def  extractMeanMfccsForDataSet(self, set_of_data, names_for_data, filename):
 
 	for index in tqdm(range(len(set_of_data))):
 		data = set_of_data[index]
-		mfccs = librosa.feature.mfcc(
-		y=data, sr=self.sr, n_fft=set_n_fft, hop_length=set_hop_length, n_mfcc=set_n_mfcc)
+		mfccs = librosa.feature.mfcc(y=data, sr=self.sr, n_fft=set_n_fft, hop_length=set_hop_length, n_mfcc=set_n_mfcc)
 		mfccs = np.mean(mfccs.T, axis=0)
 		to_append = f'\n{names_for_data[index]}'
 		for ind in  range(len(mfccs)):
@@ -350,20 +350,93 @@ def  loadFeaturesForDataSet(self, filename, data_names):
 	return data_features
 ```
 
-### [5.1] Loading MFCC values
+### [5.2] Loading MFCC values
 Loading MFCCs values is done similar to loading features.
 
 
-## [3] Models
+## [6] Models
 
-### [3.1] Support Vector Machines 
+### [6.1] Support Vector Machines 
 
 I implemented the SVM  using ```sklearn.svm.SVC```(C-Support Vector Classification).
 
-Parameters:
-- **C**: 
-- **kernel**:
-- **gamma**:
+#### [6.1.1] Parameters:
+- ```probability: True``` We need to compute probabilities in order to plot the precision-recall curve. To compute probabilities of possible outcomes for samples in X, the model needs to have probability information computed at training time: fit with attribute  `probability`  set to True. 
+- ```C: 5 ```  Regularization parameter. The strength of the regularization is inversely proportional to C. Intuitively, larger C -> more wiggly,  smaller C -> less wiggly
+- ```kernel: 'rbf'```
+- ```gamma: 0.001``` Kernel coefficient for ‘rbf’
+
+#### [6.1.2] Code:
+```python
+def svcAlgorithm(self):
+	start_time = time.time()
+
+	self.readData()
+	self.readLabels()
+	self.loadMeanAndFeaturesAllData()
+	self.standardizationScale()
+	
+	model = SVC(probability=True, C=5, gamma=0.001, kernel='rbf')
+
+	print("\nfit train features... ")
+	model.fit(self.train_features, self.train_labels)
+	print("fit train features... done")
+	  
+	print("predict validation features... ")
+	predictions = model.predict(self.validation_features)
+	print("predict validation features... done")
+	  
+	# plot precision-recall curve and confusion matrix
+	prob = model.predict_proba(self.validation_features)
+	skplt.metrics.plot_precision_recall_curve(self.validation_labels, prob)
+	skplt.metrics.plot_confusion_matrix(
+	self.validation_labels, predictions)
+	plt.show()
+
+	# calculate recall, precision and accuracy
+	self.recall = round(recall_score(
+	self.validation_labels, predictions), 3)
+	self.precision = round(average_precision_score(
+	self.validation_labels, predictions), 3)
+	self.accuracy = np.mean(predictions == self.validation_labels)
+
+	print("predict test features... ")
+	predictions = model.predict(self.test_features)
+	print("predict test features... done")
+
+	# create the submission file with the .wav file name and the predicted value
+	g = open(self.OUTPUT_FILE_PATH, 'w')
+	g.write('name,label')
+
+	for index in  range(len(self.test_names)):
+		g.write(f'\n{self.test_names[index]},{predictions[index]}')
+	g.close()
+
+	# calculate the amount of thime th algorithm has been running for
+	stop_time = time.time()
+	self.runningTime = round(int(stop_time - start_time)/60, 2)
+```
+
+#### [6.1.3] Output:
+Output for validation data:
+```
+Accuracy: 0.686
+Precision: 0.654
+Recall: 0.676
+```
+
+Output for test data from kaggle:
+```
+Public score: 0.63222
+Private score: 0.62761
+```
+
+#### [6.1.4] Observation:
+If we train the model on both the train and the validation data, we obtain the following score on kaggle:
+```
+Public score: 0.63000
+Private score: 0.63428
+```
 
 Resources:
 - [SVC] https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
