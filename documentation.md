@@ -31,15 +31,30 @@ The audio files are provided in .wav format.
 
 # Research and code implementation
 
+## [1] Setting the data paths. Reading and storing the data.
+I created a class ```MaskDetection``` in which I defined all the data variables and methods required to solve the mask detection challenge. 
+
+### [1.1]  Setting the paths to data
+I started by defining the paths to the data that had to be loaded for processing and for the data that had to be written out after processing. 
+```
+...
+TRAIN_DATA_PATH = './ml-fmi-23-2020/train/train'
+VALIDATION_DATA_PATH = './ml-fmi-23-2020/validation/validation'
+TEST_DATA_PATH = './ml-fmi-23-2020/test/test'
+...
+```
+
+### [1.2] Reading and storing the data
+
 ## [1] Initial preprocessing: cleaning the data
 
 We perceive sound in the frequency domain. The cochlea in our ear actually performs a biological Fourier transform by converting sound waves into neural signals of frequency amplitudes. It can be useful to also process digital audio signals in the frequency domain. For example tuning the lows, mids, and highs of an audio signal could be done by performing a Fourier transform on the time domain samples, scaling the various frequencies as desired, and then converting back to an audio signal with an inverse Fourier transform.
 
-[ **envelope**] create an envelope function used to create a mask with True/False values which will be used to reduce the empty/under the threshold portions of data
+[ **envelope**] I built an envelope function used to create a mask with True/False values which will be used to reduce the empty/under the threshold portions of data
     - convert the numpy array into a series and transform each value in the series into it's absolute value 
     - create a rolling window over the signal with pandas which provides rolling window calculations and get the mean of the window (window = window size is going to be a tenth of a second which translates to a tenth of the collection rate samples (we have 44100 samples/second, so in a tenth o a second, we go over a tenth of them), min_periods = the minimum number of values that we need in our window to create a calculation, center = center the window)
 
-[**clean the data**] the function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005``` and write the created clean files into the specified folder. Once the data has been cleaned, we changed the paths to the data to point to the clean ones.
+[**clean the data**] the function is going to create True/False masks (envelopes) to keep only the relevant parts of the signal from the .wav files using a ```threshold = 0.0005``` and write the created clean files into the specified folder. Once the data has been cleaned, we changed the paths to the data to point to the clean files.
 
 Resources:
 - [envelope function] https://www.youtube.com/watch?v=mUXkj1BKYk0&t=289s
@@ -47,11 +62,12 @@ Resources:
 
 
 ## [2] .WAV file spectrogram and feature extraction
+
 A spectrogram is a visual way of representing the signal strength, or “loudness”, of a signal over time at various frequencies present in a particular waveform. Every audio signal consists of many features from which we must extract the characteristics that are relevant to the problem we are trying to solve. The spectral features (frequency-based features) are obtained by converting the time-based signal into the frequency domain using the Fourier Transform.
 
 The functions used to extract the features come, mainly, from ```librosa.feature``` library.
 
-The features are extracted in separate directories for the raw data and for the clean data and stored in .csv files. The general features are stored separately from the mfcc values.
+The features are extracted in separate directories for the raw data and for the clean data and stored in .csv files. By making this, I reduced the preprocessing time: instead of extracting the features every time I run the script, I extract them once, at the first running, and store them in .csv files. At the next execution, I will use the data already extracted, so I reduce the feature extraction time expenses as long as I do not want to extract more features, case in which I have to rerun the script and extract the desired data. The general features are stored separately from the mfcc values  to make the loading of the extracted data more intuitive and more flexible regarding the number of features extracted.
 
 Resources:
 - [librosa.feature] https://librosa.github.io/librosa/feature.html
@@ -95,6 +111,8 @@ Resources:
 
 ### [2.5] Mel-Frequency Cepstral Coefficients(MFCCs)
 The Mel frequency cepstral coefficients (MFCCs) of a signal are a small set of features (usually about 10–20) which concisely describe the overall shape of a spectral envelope. It models the characteristics of the human voice.
+
+As I mentioned earlier, I stored the MFCCs in a separate .csv file to make the loading of the extracted data more intuitive and more flexible regarding the number of features extracted.
 
 Resources:
 - [explanation] https://www.youtube.com/watch?v=m3XbqfIij_Y
