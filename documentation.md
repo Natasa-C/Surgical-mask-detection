@@ -4,6 +4,20 @@
 #### Discriminate between utterances with and without surgical mask
 Kaggle competition link: [https://www.kaggle.com/c/ml-fmi-23-2020](https://www.kaggle.com/c/ml-fmi-23-2020)
 
+
+# Table of Contents
+1. [Example](#example)
+2. [Example2](#example2)
+3. [Third Example](#third-example)
+4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
+
+
+## Example
+## Example2
+## Third Example
+## [Fourth Example](http://www.fourthexample.com) 
+
+
 ## Data Description
 #### Task
 Participants have to train a model for surgical mask detection. This is a binary classification task in which an utterance (audio file) must be labeled as without mask (label 0) or with mask (label 1).
@@ -743,7 +757,7 @@ def  normalizationStandardizationLab(self):
 Resources:
 - [standardization/normalization] https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/?fbclid=IwAR31clqIFgUfDgvh4GoU4TY-Qgse1qOuDdQp6wVu8qzr2BnxBfkZFOX9hYU
 
-## [9] Ploting
+## [9] Plotting
 
 I used ```skplt.metrics.plot_precision_recall_curve``` and ```skplt.metrics.plot_confusion_matrix``` for plotting in order to analyze parameters.
 
@@ -771,21 +785,11 @@ Resources:
 - [recall_score] https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html#sklearn.metrics.recall_score
 - [average_precision_score] https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score
 
+## [11] Other auxiliary functions used
 
-## [11] Other related resources:
+- `tryDifferentModels` I implemented this function to try many models with different parameters in order to quickly find out which model is more likely to work the best
+- `tryAllFeatureCombinationsForSvc` this function tests, for a certain model, all combinations of features to find out which one will give the best results
+
+## [12] Other related resources:
 - https://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html?fbclid=IwAR1w6-IcQ3yvuH2frW3vEDl7CqeC4yY6KOnrrZKSMz2b_MHO6qadmj-PSKg
 - https://dev.to/zenulabidin/python-audio-processing-at-lightspeed-part-1-zignal-5658
-
-
-
-# Table of Contents
-1. [Example](#example)
-2. [Example2](#example2)
-3. [Third Example](#third-example)
-4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
-
-
-## Example
-## Example2
-## Third Example
-## [Fourth Example](http://www.fourthexample.com) 
